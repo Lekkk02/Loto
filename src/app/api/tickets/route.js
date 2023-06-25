@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import ticketsModel from "@/models/ticketsModel";
-import moment from "moment-timezone";
 
 export const GET = async (request) => {
   //fetch
@@ -13,7 +12,6 @@ export const GET = async (request) => {
     /*     const ticket = await ticketsModel.find({ createdAt: { $gte: today } });
      */
     const ticket = await ticketsModel.find();
-    console.log(Date.now());
 
     return new NextResponse(JSON.stringify(ticket), { status: 200 });
   } catch (err) {
@@ -25,7 +23,7 @@ export const POST = async (request) => {
   const body = await request.json();
   var offset = -4;
 
-  const carreras = {
+  /* const carreras = {
     carrera1: {
       primer: "2",
       segundo: "3",
@@ -36,10 +34,9 @@ export const POST = async (request) => {
       segundo: "1",
       retirados: "15, 6, 8",
     },
-  };
+  }; */
 
   const today = new Date(new Date().getTime() + offset * 3600 * 1000);
-  console.log(today);
   body.createdAt = today;
   body.carreras = carreras;
   console.log(JSON.stringify(carreras));
