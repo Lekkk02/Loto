@@ -8,12 +8,16 @@ if (mongoose.models["Ticket"]) {
 } else {
   const ticketSchema = new Schema(
     {
-      name: {
+      cedula: {
         type: String,
         required: true,
       },
-      carreras: {
-        type: Object,
+      nombre: {
+        type: String,
+        required: true,
+      },
+      telefono: {
+        type: String,
         required: true,
       },
     },

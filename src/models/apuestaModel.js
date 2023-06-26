@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 let Apuesta;
 
 if (mongoose.models["Apuesta"]) {
-  Ticket = mongoose.model("Apuesta");
+  Apuesta = mongoose.model("Apuesta");
 } else {
   const apuestaSchema = new Schema(
     {
@@ -25,10 +25,14 @@ if (mongoose.models["Apuesta"]) {
         type: Object,
         required: true,
       },
+      favGaceta: {
+        type: String,
+        default: "",
+      },
     },
     { timestamps: true }
   );
-  Ticket = mongoose.model("Apuesta", apuestaSchema);
+  Apuesta = mongoose.model("Apuesta", apuestaSchema);
 }
 
-export default Ticket;
+export default Apuesta;
