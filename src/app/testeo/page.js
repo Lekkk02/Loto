@@ -41,7 +41,7 @@ const Table = () => {
 
   const renderTableHeader = () => {
     if (!data) return null;
-    let header = Object.keys(data[0]);
+    let header = Object.keys(data[0].carreras);
     return header.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
     });
@@ -55,7 +55,7 @@ const Table = () => {
           <td>{hipodromo}</td>
           <td>{status}</td>
           {Object.keys(carreras).map((key) => (
-            <td key={key}>
+            <td key={key} className="border-2 border-black">
               <ul>
                 <li>N°1: {carreras[key].primero}</li>
                 <li>N°2: {carreras[key].segundo}</li>
@@ -71,7 +71,7 @@ const Table = () => {
   return (
     <div>
       <h1>Tabla Dinámica</h1>
-      <table id="students">
+      <table id="students" className="w-full">
         <tbody>
           <tr>{renderTableHeader()}</tr>
           {renderTableData()}
