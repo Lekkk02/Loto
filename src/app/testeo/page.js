@@ -40,30 +40,43 @@ const Table = () => {
  */
 
   const renderTableHeader = () => {
-    if (!data) return null;
+    /*     if (!data) return null;
     let header = Object.keys(data[0].carreras);
     return header.map((key, index) => {
       return <th key={index}>{key.toUpperCase()}</th>;
-    });
+    }); */
+    return (
+      <>
+        <th>Carrera</th>
+        <th>Retirados</th>
+        <th>Fav. Gaceta</th>
+        <th>Llegada</th>{" "}
+      </>
+    );
   };
 
   const renderTableData = () => {
     return data?.map((item, index) => {
       const { hipodromo, carreras, status } = item;
       return (
-        <tr key={index}>
-          <td>{hipodromo}</td>
-          <td>{status}</td>
+        <>
           {Object.keys(carreras).map((key) => (
-            <td key={key} className="border-2 border-black">
-              <ul>
-                <li>N°1: {carreras[key].primero}</li>
-                <li>N°2: {carreras[key].segundo}</li>
-                <li>N°3: {carreras[key].tercero}</li>
-              </ul>
-            </td>
+            <tr key={index}>
+              <td className="border border-black text-lg">{key}</td>
+              <td className="border border-black text-lg">
+                {carreras[key].retirados}
+              </td>
+              <td className="border border-black text-lg">
+                {carreras[key].favGaceta}
+              </td>
+              <td key={key} className="border border-black">
+                <p>N°1: {carreras[key].primero}</p>
+                <p>N°2: {carreras[key].segundo}</p>
+                <p>N°3: {carreras[key].tercero}</p>
+              </td>
+            </tr>
           ))}
-        </tr>
+        </>
       );
     });
   };
