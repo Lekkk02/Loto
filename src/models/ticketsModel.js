@@ -20,10 +20,26 @@ if (mongoose.models["Ticket"]) {
         type: String,
         required: true,
       },
+      carreras: {
+        type: Object,
+        required: true,
+      },
     },
     { timestamps: true }
   );
+  ticketSchema.add({
+    carreras: {
+      type: Object,
+      required: true,
+    },
+  });
   Ticket = mongoose.model("Ticket", ticketSchema);
 }
+Ticket.schema.add({
+  carreras: {
+    type: Object,
+    required: true,
+  },
+});
 
 export default Ticket;

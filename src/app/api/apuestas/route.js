@@ -17,7 +17,10 @@ export const GET = async (request) => {
     /*     const ticket = await ticketsModel.find({
       createdAt: { $gte: new Date(tomorrow), $lt: new Date(tomorrow) },
     }); */
-    const apuesta = await apuestaModel.find({ status: "ACTIVE" });
+    const apuesta = await apuestaModel.find({
+      createdAt: { $gte: today, $lt: new Date(tomorrow) },
+      status: "ACTIVE",
+    });
     return new NextResponse(JSON.stringify(apuesta), { status: 200 });
   } catch (err) {
     return new NextResponse("Database Error", { status: 500 });

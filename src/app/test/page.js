@@ -6,10 +6,10 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-  const [name, setName] = useState("");
+  const [nombre, setName] = useState("");
 
   const handleSubmit = async (event) => {
-    const carreras = {
+    /*     const carreras = {
       carrera1: {
         primer: "2",
         segundo: "3",
@@ -20,17 +20,19 @@ export default function Home() {
         segundo: "1",
         retirados: "15, 6, 8",
       },
-    };
+    }; */
+    const cedula = "cedulaTest";
+    const telefono = "telefonoTest";
 
     try {
       await fetch("/api/tickets", {
         method: "POST",
         body: JSON.stringify({
-          name,
+          nombre,
+          cedula,
+          telefono,
         }),
       });
-      mutate();
-      e.target.reset();
     } catch (err) {
       console.log(err);
     }
@@ -42,7 +44,7 @@ export default function Home() {
         Enter your name:
         <input
           type="text"
-          value={name}
+          value={nombre}
           onChange={(e) => setName(e.target.value)}
         />
       </label>

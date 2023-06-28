@@ -27,24 +27,27 @@ export const GET = async (request) => {
 export const POST = async (request) => {
   const body = await request.json();
   var offset = -4;
-
-  /*   const carreras = {
+  /* 
+  const carreras = {
     carrera1: {
       primer: "2",
-      segundo: "3",
-      retirados: "5, 7, 9",
     },
     carrera2: {
-      primer: "12",
-      segundo: "1",
-      retirados: "15, 6, 8",
+      primer: "3",
     },
-  }; */
-
+    carrera3: {
+      primer: "5",
+    },
+    carrera4: {
+      primer: "8",
+    },
+    carrera5: {
+      primer: "10",
+    },
+  };
+ */
   const today = new Date(new Date().getTime() + offset * 3600 * 1000);
   body.createdAt = today;
-  /*   body.carreras = carreras;
-  console.log(JSON.stringify(carreras)); */
   const newTicket = new ticketsModel(body);
   try {
     await connect();
