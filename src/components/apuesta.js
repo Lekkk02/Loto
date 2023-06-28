@@ -1,6 +1,6 @@
 "use client";
 import useSWR from "swr";
-import ReactTable from "react-table";
+import Table from "@/components/tabla";
 /* const getData = async () => {
   const data = await fetch("/api/tickets");
   return data.json();
@@ -62,7 +62,7 @@ export default function Home() {
                 <h1 className="text-2xl font-bold ml-4">
                   Pollas jugadas:
                   <span className="ml-2 border font-normal rounded-xl px-4 bg-green-500  ">
-                    {stat(data) + 100} Pollas
+                    {stat(data) + 11354} Pollas
                   </span>
                 </h1>
                 {/*               <h1 key={item.createdAt}>{item.carreras.carrera1.primero}</h1>
@@ -72,7 +72,25 @@ export default function Home() {
             </div>
           );
         })}
-        <h1 className="pb-96" key={"a"}></h1>
+        <div className="py-6 text-lg items-center flex flex-col  bg-gray-200 border border-gray-300">
+          <h1 className="font-bold">
+            Total a repartir:{""}
+            <span className="font-light s  ml-2">
+              ({stat(data) * 2 * 0.6}
+              {"$)"}
+            </span>
+          </h1>
+          <h1 className="font-l">Primer lugar:</h1>
+          <h1 className="font-medium">Segundo lugar:</h1>
+          <hr className="block border-1 border-black w-full"></hr>
+          <h1 className="font-bold">Premios por jugador </h1>
+          <h1>Primer lugar:</h1>
+          <h1>Segundo lugar:</h1>
+        </div>
+
+        <div className="mt-12">
+          <Table />
+        </div>
       </div>
     );
   }

@@ -93,8 +93,8 @@ const Table = () => {
   };
 
   return (
-    <div>
-      <h1>Tabla Dinámica</h1>
+    <div className="text-center">
+      <h1 className="font-medium text-2xl">Estado de las carreras</h1>
       <table id="students" className="w-full">
         <tbody>
           <tr>{renderTableHeader()}</tr>
