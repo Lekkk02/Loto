@@ -19,15 +19,11 @@ if (mongoose.models["Apuesta"]) {
       },
       status: {
         type: String,
-        required: true,
+        default: "ACTIVE",
       },
       carreras: {
         type: Object,
         required: true,
-      },
-      favGaceta: {
-        type: String,
-        default: "",
       },
     },
     { timestamps: true }

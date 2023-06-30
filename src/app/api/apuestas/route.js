@@ -8,6 +8,7 @@ export const GET = async (request) => {
     await connect();
     var offset = -4;
     const today = new Date(new Date().getTime() + offset * 3600 * 1000);
+    today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     console.log("Today date", today);
@@ -17,10 +18,15 @@ export const GET = async (request) => {
     /*     const ticket = await ticketsModel.find({
       createdAt: { $gte: new Date(tomorrow), $lt: new Date(tomorrow) },
     }); */
-    const apuesta = await apuestaModel.find({
+    /*     const apuesta = await apuestaModel.find({
       createdAt: { $gte: today, $lt: new Date(tomorrow) },
       status: "ACTIVE",
-    });
+    }); */
+    const apuesta = await apuestaModel
+      .find()
+      .sort({ field: "asc", _id: -1 })
+      .limit(1);
+
     return new NextResponse(JSON.stringify(apuesta), { status: 200 });
   } catch (err) {
     return new NextResponse("Database Error", { status: 500 });

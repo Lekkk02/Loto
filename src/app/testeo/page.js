@@ -16,8 +16,7 @@ const Table = () => {
     const { data, error, isLoading } = useSWR("/api/tickets", fetcher);
     return data;
   };
-  const data2 = getTickets();
-  const data = getApuestas();
+  const data = getTickets();
 
   /* const [data, setData] = useState([
     {
@@ -40,27 +39,32 @@ const Table = () => {
  */
 
   const renderTableHeader = () => {
-    /*     if (!data) return null;
+    if (!data) return null;
     let header = Object.keys(data[0].carreras);
-    return header.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
-    }); */
     return (
       <>
-        <th>Carrera</th>
-        <th>Retirados</th>
-        <th>Fav. Gaceta</th>
-        <th>Llegada</th>{" "}
+        <th>Pos°</th>
+        <th>Ticket</th>
+
+        {header.map((key, index) => {
+          return <th key={index}>{key[0] + key[key.length - 1]}</th>;
+        })}
+        <th>Puntos</th>
       </>
     );
   };
 
   const renderTableData = () => {
+    let arr = [];
     return data?.map((item, index) => {
-      const { hipodromo, carreras, status } = item;
+      arr.push(item);
+      console.log(arr);
       return (
         <>
-          {Object.keys(carreras).map((key) => (
+          <tr>
+            <td>{item.nombre}</td>{" "}
+          </tr>
+          {/*  {Object.keys(carreras).map((key) => (
             <tr key={index}>
               <td className="border border-black text-lg">
                 Carrera {key.substring(7)}
@@ -86,15 +90,15 @@ const Table = () => {
                 </p>
               </td>
             </tr>
-          ))}
+          ))} */}
         </>
       );
     });
   };
 
   return (
-    <div>
-      <h1>Tabla Dinámica</h1>
+    <div className="text-center">
+      <h1 className="font-medium text-2xl">Estado de las carreras</h1>
       <table id="students" className="w-full">
         <tbody>
           <tr>{renderTableHeader()}</tr>
