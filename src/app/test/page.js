@@ -3,11 +3,19 @@ import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [nombre, setName] = useState("");
+  const [data, setData] = useState([]);
 
+  useEffect(() => {
+    axios.get("/api/tickets").then((res) => {
+      setData(res.data);
+      console.log(res.data);
+    });
+  }, []);
   const handleSubmit = async (event) => {
     /*     const carreras = {
       carrera1: {

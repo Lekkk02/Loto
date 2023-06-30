@@ -17,6 +17,7 @@ const Table = () => {
     return data;
   };
   const data = getTickets();
+  const data2 = getApuestas();
 
   /* const [data, setData] = useState([
     {
@@ -56,8 +57,10 @@ const Table = () => {
 
   const renderTableData = () => {
     let arr = [];
-    return data?.map((item, index) => {
+    data?.map((item, index) => {
       arr.push(item);
+    });
+    return arr?.map((item, index) => {
       console.log(arr);
       return (
         <>

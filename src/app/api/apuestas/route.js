@@ -22,6 +22,7 @@ export const GET = async (request) => {
       createdAt: { $gte: today, $lt: new Date(tomorrow) },
       status: "ACTIVE",
     }); */
+
     const apuesta = await apuestaModel
       .find()
       .sort({ field: "asc", _id: -1 })
