@@ -19,42 +19,23 @@ const Table = () => {
   const data = getTickets();
   const data2 = getApuestas();
 
-  /* const [data, setData] = useState([
-    {
-      nombre: "Juan",
-      apellido: "Pérez",
-      edad: {
-        item1: { campo1: "20", campo2: "30", campo3: "40" },
-        item2: { campo1: "25", campo2: "35", campo3: "45" },
-      },
-    },
-    {
-      nombre: "María",
-      apellido: "González",
-      edad: {
-        item1: { campo1: "30", campo2: "40", campo3: "50" },
-        item2: { campo1: "35", campo2: "45", campo3: "55" },
-      },
-    },
-  ]);
- */
-
   const renderTableHeader = () => {
     if (!data) return null;
     let header = Object.keys(data[0].carreras);
     return (
       <>
-        <th className="border border-black">Pos°</th>
-        <th className="border border-black">Ticket</th>
+        <th className="border border-black text-lg ">Pos°</th>
+        <th className="border border-black text-lg  ">Ticket</th>
+        <th className=""></th>
 
         {header.map((key, index) => {
           return (
-            <th key={index} className="border border-black">
-              {key[0] + key[key.length - 1]}
+            <th key={index} className="border border-black text-lg ">
+              {key[0].toUpperCase() + key[key.length - 1]}
             </th>
           );
         })}
-        <th>Puntos</th>
+        <th className="text-lg  ">Puntos</th>
       </>
     );
   };
@@ -120,40 +101,36 @@ const Table = () => {
     };
     return data?.map((item, index) => {
       console.log(data);
+      const carrerasArray = Object.entries(item.carreras);
+      carrerasArray.sort((a, b) => {
+        const aNumber = parseInt(a[0].replace("carrera", ""));
+        const bNumber = parseInt(b[0].replace("carrera", ""));
+        return aNumber - bNumber;
+      });
+      const carrerasOrdenadas = Object.fromEntries(carrerasArray);
       return (
         <>
           <tr>
-            <td key={item.posicion}>{getPos(item, index)}</td>
-            <td key={item.nombre}>{item.nombre}</td>
-            <td key={item.puntos}>{item.puntos}</td>{" "}
+            <td key={item.posicion} className="border-b border-black">
+              {getPos(item, index)}
+            </td>
+            <td key={item.ticketSerial} className="border-b border-black">
+              {item.ticketSerial}
+            </td>
+            <td key={item.ticketSerial} className="border-b border-black">
+              CABALLO:
+            </td>
+            {Object.keys(carrerasOrdenadas).map((i) => {
+              return (
+                <td className="border-b border-black">
+                  {carrerasOrdenadas[i].primer}
+                </td>
+              );
+            })}
+            <td key={item.puntos} className="border-b border-black">
+              {item.puntos}
+            </td>{" "}
           </tr>
-          {/*  {Object.keys(carreras).map((key) => (
-            <tr key={index}>
-              <td className="border border-black text-lg">
-                Carrera {key.substring(7)}
-              </td>
-              <td className="border border-black text-lg">
-                {carreras[key].retirados}
-              </td>
-              <td className="border border-black text-lg">
-                {carreras[key].favGaceta}
-              </td>
-              <td key={key} className="border border-black">
-                <p className="font-bold">
-                  N°1:{" "}
-                  <span className="font-light">{carreras[key].primero}</span>
-                </p>
-                <p className="font-bold">
-                  N°2:
-                  <span className="font-light"> {carreras[key].segundo} </span>
-                </p>
-                <p className="font-bold">
-                  N°3:{" "}
-                  <span className="font-light"> {carreras[key].tercero}</span>
-                </p>
-              </td>
-            </tr>
-          ))} */}
         </>
       );
     });
