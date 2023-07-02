@@ -56,40 +56,37 @@ const Table = () => {
   };
 
   const renderTableData = () => {
-    return data?.map((item, index) => {
-      const { hipodromo, carreras, status } = item;
-      return (
-        <>
-          {Object.keys(carreras).map((key) => (
-            <tr key={index}>
-              <td className="border border-black text-lg">
-                Carrera {key.substring(7)}
-              </td>
-              <td className="border border-black text-lg">
-                {carreras[key].retirados}
-              </td>
-              <td className="border border-black text-lg">
-                {carreras[key].favGaceta}
-              </td>
-              <td key={key} className="border border-black">
-                <p className="font-bold">
-                  N°1:{" "}
-                  <span className="font-light">{carreras[key].primero}</span>
-                </p>
-                <p className="font-bold">
-                  N°2:
-                  <span className="font-light"> {carreras[key].segundo} </span>
-                </p>
-                <p className="font-bold">
-                  N°3:{" "}
-                  <span className="font-light"> {carreras[key].tercero}</span>
-                </p>
-              </td>
-            </tr>
-          ))}
-        </>
-      );
-    });
+    const { hipodromo, carreras, status } = data;
+    return (
+      <>
+        {Object.keys(carreras).map((key) => (
+          <tr key={data.hipodromo}>
+            <td className="border border-black text-lg">
+              Carrera {key.substring(7)}
+            </td>
+            <td className="border border-black text-lg">
+              {carreras[key].retirados}
+            </td>
+            <td className="border border-black text-lg">
+              {carreras[key].favGaceta}
+            </td>
+            <td key={key} className="border border-black">
+              <p className="font-bold">
+                N°1: <span className="font-light">{carreras[key].primero}</span>
+              </p>
+              <p className="font-bold">
+                N°2:
+                <span className="font-light"> {carreras[key].segundo} </span>
+              </p>
+              <p className="font-bold">
+                N°3:{" "}
+                <span className="font-light"> {carreras[key].tercero}</span>
+              </p>
+            </td>
+          </tr>
+        ))}
+      </>
+    );
   };
 
   return (

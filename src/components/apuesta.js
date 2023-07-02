@@ -44,39 +44,31 @@ export default function Home() {
   } else {
     return (
       <div>
-        {data2?.map((item) => {
-          console.log(Object.keys(item.carreras));
-          let keys = Object.keys(item.carreras);
-          let asd = keys[0];
-          console.log(item.carreras[asd].primero);
-          let date = new Date(item.createdAt)
-            .toLocaleDateString()
-            .split(",")[0];
-          return (
-            <div>
-              <div className="text-center mt-4 mb-12">
-                <h1 className="text-2xl font-bold ml-4">
-                  {item.hipodromo}{" "}
-                  <span className="ml-2 font-normal"> {date}</span>
-                </h1>
-                <h1 className="text-2xl font-bold ml-4">
-                  Pollas jugadas:
-                  <span className="ml-2 border font-normal rounded-xl px-4 bg-green-500  ">
-                    {stat(data) + 11354} Pollas
-                  </span>
-                </h1>
-                {/*               <h1 key={item.createdAt}>{item.carreras.carrera1.primero}</h1>
-                 */}{" "}
-              </div>
-              <div></div>
-            </div>
-          );
-        })}
+        <div>
+          <div className="text-center mt-4 mb-12">
+            <h1 className="text-2xl font-bold ml-4">
+              {data2.hipodromo}{" "}
+              <span className="ml-2 font-normal">
+                {" "}
+                {new Date(data2.createdAt).toLocaleDateString().split(",")[0]}
+              </span>
+            </h1>
+            <h1 className="text-2xl font-bold ml-4">
+              Pollas jugadas:
+              <span className="ml-2 border font-normal rounded-xl px-4 bg-green-500  ">
+                {stat(data) + 11354} Pollas
+              </span>
+            </h1>
+            {/*               <h1 key={item.createdAt}>{item.carreras.carrera1.primero}</h1>
+             */}{" "}
+          </div>
+          <div></div>
+        </div>
         <div className="py-6 text-lg items-center flex flex-col  bg-gray-200 border border-gray-300">
           <h1 className="font-bold">
             Total a repartir:{""}
             <span className="font-light s  ml-2">
-              ({stat(data) * 2 * 0.6}
+              {stat(data) * 2 * 0.6}
               {"$)"}
             </span>
           </h1>

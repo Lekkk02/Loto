@@ -63,32 +63,31 @@ const Table = () => {
     console.log(data2);
     console.log(data);
     Object.keys(data2?.carreras).map((apuesta, index) => {
+      let primerLugar = data2?.carreras[apuesta].primero;
+      let segundoLugar = data2?.carreras[apuesta].segundo;
+      let tercerLugar = data2?.carreras[apuesta].tercero;
+
+      /*       console.log(
+        "Primer lugar: ",
+        primerLugar,
+        " Segundo lugar: ",
+        segundoLugar
+      ); */
       data?.map((ticket) => {
-        const { carreras } = ticket;
-        Object.keys(carreras).map((carrera) => {
-          if (
-            ticket.carreras[carrera].primer.valueOf() ==
-            data2?.carreras[apuesta].primero.valueOf()
-          ) {
-            console.log("Primera carrera acertada por: ", ticket.nombre);
-            ticket["puntos"] += 5;
-            return;
-          } else if (
-            ticket.carreras[carrera].primer.valueOf() ==
-            data2?.carreras[apuesta].segundo.valueOf()
-          ) {
-            console.log("Segunda carrera acertada");
-            ticket["puntos"] += 3;
-            return;
-          } else if (
-            ticket.carreras[carrera].primer.valueOf() ==
-            data2?.carreras[apuesta].tercero.valueOf()
-          ) {
-            console.log("Tercera carrera acertada");
-            ticket["puntos"] += 1;
-            return;
-          }
-        });
+        if (ticket.carreras[apuesta].primer == primerLugar) {
+          console.log("Primer puesto acertado por: ", ticket.nombre);
+          console.log(index);
+          ticket["puntos"] += 5;
+        } else if (ticket.carreras[apuesta].primer == segundoLugar) {
+          console.log("Segundo puesto acertado por: ", ticket.nombre);
+          console.log(index);
+          ticket["puntos"] += 3;
+        } else if (ticket.carreras[apuesta].primer == tercerLugar) {
+          console.log("Tercer puesto acertado por: ", ticket.nombre);
+          console.log(index);
+
+          ticket["puntos"] += 1;
+        }
       });
     });
     return data?.map((item, index) => {
