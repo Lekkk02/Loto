@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import Apuesta from "@/components/apuesta";
-
+import Table from "@/components/tablaTickets";
 /* const getData = async () => {
   const data = await fetch("/api/tickets");
   return data.json();
@@ -11,9 +11,18 @@ import Apuesta from "@/components/apuesta";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  return (
-    <div>
-      <Apuesta />
-    </div>
-  );
+  try {
+    return (
+      <div>
+        <Apuesta />
+        <Table />
+      </div>
+    );
+  } catch (err) {
+    return (
+      <h1 className="py-52 text-center font-bold text-2xl">
+        Error cargando datos...
+      </h1>
+    );
+  }
 }

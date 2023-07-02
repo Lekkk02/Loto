@@ -56,7 +56,7 @@ export default function Home() {
             <h1 className="text-2xl font-bold ml-4">
               Pollas jugadas:
               <span className="ml-2 border font-normal rounded-xl px-4 bg-green-500  ">
-                {stat(data) + 11354} Pollas
+                {stat(data)} Pollas
               </span>
             </h1>
             {/*               <h1 key={item.createdAt}>{item.carreras.carrera1.primero}</h1>

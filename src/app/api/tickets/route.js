@@ -8,6 +8,7 @@ export const GET = async (request) => {
     await connect();
     var offset = -4;
     const today = new Date(new Date().getTime() + offset * 3600 * 1000);
+    today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     console.log("Today date", today);
@@ -18,7 +19,7 @@ export const GET = async (request) => {
       createdAt: { $gte: new Date(tomorrow), $lt: new Date(tomorrow) },
     }); */
     const ticket = await ticketsModel
-      .find()
+      .find({ createdAt: { $gte: today, $lt: tomorrow } })
       .select("ticketSerial carreras puntos -_id");
     return new NextResponse(JSON.stringify(ticket), { status: 200 });
   } catch (err) {

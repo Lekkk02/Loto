@@ -50,16 +50,10 @@ const Table = () => {
       let tercerLugar = data2?.carreras[apuesta].tercero;
       data?.map((ticket) => {
         if (ticket.carreras[apuesta].primer == primerLugar) {
-          console.log("Primer puesto acertado por: ", ticket.nombre);
-          console.log(index);
           ticket["puntos"] += 5;
         } else if (ticket.carreras[apuesta].primer == segundoLugar) {
-          console.log("Segundo puesto acertado por: ", ticket.nombre);
-          console.log(index);
           ticket["puntos"] += 3;
         } else if (ticket.carreras[apuesta].primer == tercerLugar) {
-          console.log("Tercer puesto acertado por: ", ticket.nombre);
-          console.log(index);
           ticket["puntos"] += 1;
         }
       });
@@ -142,8 +136,8 @@ const Table = () => {
     );
   } else {
     return (
-      <div className="text-center">
-        <h1 className="font-medium text-2xl">Estado de las carreras</h1>
+      <div className="text-center my-14">
+        <h1 className="font-medium text-2xl">Listado de tickets</h1>
         <table id="students" className="w-full">
           <tbody>
             <tr className="border border-black">{renderTableHeader()}</tr>

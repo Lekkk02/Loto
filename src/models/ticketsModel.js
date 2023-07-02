@@ -1,3 +1,4 @@
+import { Int32 } from "mongodb";
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
@@ -20,16 +21,18 @@ if (mongoose.models["Ticket"]) {
         type: String,
         required: true,
       },
+      carreras: {
+        type: Object,
+        required: true,
+      },
+      puntos: {
+        type: Number,
+        default: 0,
+      },
     },
     { timestamps: true }
   );
   Ticket = mongoose.model("Ticket", ticketSchema);
 }
-Ticket.schema.add({
-  carreras: {
-    type: Object,
-    required: true,
-  },
-});
 
 export default Ticket;
