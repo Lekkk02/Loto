@@ -60,19 +60,13 @@ const Table = () => {
   };
 
   const renderTableData = () => {
+    let arr = [];
     console.log(data2);
     console.log(data);
     Object.keys(data2?.carreras).map((apuesta, index) => {
       let primerLugar = data2?.carreras[apuesta].primero;
       let segundoLugar = data2?.carreras[apuesta].segundo;
       let tercerLugar = data2?.carreras[apuesta].tercero;
-
-      /*       console.log(
-        "Primer lugar: ",
-        primerLugar,
-        " Segundo lugar: ",
-        segundoLugar
-      ); */
       data?.map((ticket) => {
         if (ticket.carreras[apuesta].primer == primerLugar) {
           console.log("Primer puesto acertado por: ", ticket.nombre);
@@ -85,16 +79,51 @@ const Table = () => {
         } else if (ticket.carreras[apuesta].primer == tercerLugar) {
           console.log("Tercer puesto acertado por: ", ticket.nombre);
           console.log(index);
-
           ticket["puntos"] += 1;
         }
       });
     });
+    data?.sort((a, b) => {
+      if (a.puntos > b.puntos) {
+        return -1;
+      }
+      if (a.puntos < b.puntos) {
+        return 1;
+      }
+      return 0;
+    });
+
+    for (var i = 0; i < data?.length; i++) {
+      if (i == 0) {
+        data[i].posicion = "N°1";
+      } else if (i == 1 && data[i].puntos == data[i - 1].puntos) {
+        data[i].posicion = "N°1";
+      } else if (i == 1 && data[i].puntos != data[i - 1].puntos) {
+        data[i].posicion = "N°2";
+      } else if (i > 1 && data[i].puntos == data[i - 1].puntos) {
+        data[i].posicion = data[i - 1].posicion;
+      } else if (i > 1 && data[i].puntos != data[i - 1].puntos) {
+        if (data[i - 1].posicion == "N°1") {
+          data[i].posicion = "N°2";
+        } else {
+          data[i].posicion = "";
+        }
+      }
+    }
+
+    const getPos = (item, index) => {
+      if (item.posicion != "N°1" && item.posicion != "N°2") {
+        return index;
+      } else {
+        return item.posicion;
+      }
+    };
     return data?.map((item, index) => {
       console.log(data);
       return (
         <>
           <tr>
+            <td key={item.posicion}>{getPos(item, index)}</td>
             <td key={item.nombre}>{item.nombre}</td>
             <td key={item.puntos}>{item.puntos}</td>{" "}
           </tr>
