@@ -44,11 +44,15 @@ const Table = () => {
     let header = Object.keys(data[0].carreras);
     return (
       <>
-        <th>Pos°</th>
-        <th>Ticket</th>
+        <th className="border border-black">Pos°</th>
+        <th className="border border-black">Ticket</th>
 
         {header.map((key, index) => {
-          return <th key={index}>{key[0] + key[key.length - 1]}</th>;
+          return (
+            <th key={index} className="border border-black">
+              {key[0] + key[key.length - 1]}
+            </th>
+          );
         })}
         <th>Puntos</th>
       </>
@@ -56,16 +60,44 @@ const Table = () => {
   };
 
   const renderTableData = () => {
-    let arr = [];
-    data?.map((item, index) => {
-      arr.push(item);
+    console.log(data2);
+    console.log(data);
+    Object.keys(data2?.carreras).map((apuesta, index) => {
+      data?.map((ticket) => {
+        const { carreras } = ticket;
+        Object.keys(carreras).map((carrera) => {
+          if (
+            ticket.carreras[carrera].primer.valueOf() ==
+            data2?.carreras[apuesta].primero.valueOf()
+          ) {
+            console.log("Primera carrera acertada por: ", ticket.nombre);
+            ticket["puntos"] += 5;
+            return;
+          } else if (
+            ticket.carreras[carrera].primer.valueOf() ==
+            data2?.carreras[apuesta].segundo.valueOf()
+          ) {
+            console.log("Segunda carrera acertada");
+            ticket["puntos"] += 3;
+            return;
+          } else if (
+            ticket.carreras[carrera].primer.valueOf() ==
+            data2?.carreras[apuesta].tercero.valueOf()
+          ) {
+            console.log("Tercera carrera acertada");
+            ticket["puntos"] += 1;
+            return;
+          }
+        });
+      });
     });
-    return arr?.map((item, index) => {
-      console.log(arr);
+    return data?.map((item, index) => {
+      console.log(data);
       return (
         <>
           <tr>
-            <td>{item.nombre}</td>{" "}
+            <td key={item.nombre}>{item.nombre}</td>
+            <td key={item.puntos}>{item.puntos}</td>{" "}
           </tr>
           {/*  {Object.keys(carreras).map((key) => (
             <tr key={index}>
@@ -99,17 +131,23 @@ const Table = () => {
     });
   };
 
-  return (
-    <div className="text-center">
-      <h1 className="font-medium text-2xl">Estado de las carreras</h1>
-      <table id="students" className="w-full">
-        <tbody>
-          <tr>{renderTableHeader()}</tr>
-          {renderTableData()}
-        </tbody>
-      </table>
-    </div>
-  );
+  if (data2 == undefined || data2 == null) {
+    return (
+      <h1 className="text-center font-bold text-2xl py-64">Cargando...</h1>
+    );
+  } else {
+    return (
+      <div className="text-center">
+        <h1 className="font-medium text-2xl">Estado de las carreras</h1>
+        <table id="students" className="w-full">
+          <tbody>
+            <tr className="border border-black">{renderTableHeader()}</tr>
+            {renderTableData()}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 };
 
 export default Table;

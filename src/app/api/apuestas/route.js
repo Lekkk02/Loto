@@ -24,7 +24,7 @@ export const GET = async (request) => {
     }); */
 
     const apuesta = await apuestaModel
-      .find()
+      .findOne()
       .sort({ field: "asc", _id: -1 })
       .limit(1);
 
