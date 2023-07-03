@@ -29,20 +29,22 @@ export default function Home() {
   const data2 = getApuestas();
   console.log(data2);
   const data = getTickets(data2?._id);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(carreras);
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const [carrera, field] = name.split(".");
     setCarreras((prevState) => ({
       ...prevState,
-      [name]: value,
+      [carrera]: {
+        ...prevState[carrera],
+        [field]: value,
+      },
     }));
   };
-
   if (
     data2 == null ||
     data2 == undefined ||
@@ -83,21 +85,18 @@ export default function Home() {
               className="rounded-md p-1 my-2"
               maxLength={8}
             ></input>
-            {Object.keys(data2?.carreras).map((carrera) => {
-              console.log(carrera);
-              return (
-                <>
-                  <label for="txtCedula">{carrera} </label>
-                  <input
-                    type="text"
-                    name={carrera}
-                    className="rounded-md p-1 my-2"
-                    onChange={handleChange}
-                    maxLength={8}
-                  ></input>
-                </>
-              );
-            })}
+            {Object.entries(carreras).map(([carrera, valores]) => (
+              <div key={carrera}>
+                <label htmlFor={carrera}>{carrera}</label>
+                <input
+                  type="text"
+                  id={carrera}
+                  name={`${carrera}.primero`}
+                  value={valores.primero}
+                  onChange={handleInputChange}
+                />
+              </div>
+            ))}
             <label for="txtTelf">Teléfono</label>
             <input
               type="text"
@@ -117,17 +116,7 @@ export default function Home() {
               maxLength={32}
             ></input>
 
-            <Link
-              href="/usuario"
-              className="border-2 border-gray p-1 mt-6 bg-white cursor-pointer hover:bg-slate-50"
-            >
-              <input
-                type="submit"
-                name="button"
-                value="Crear apuesta"
-                href="/usuarios"
-              />
-            </Link>
+            <button type="submit">Enviar</button>
           </form>
         </div>
       </main>
