@@ -29,6 +29,10 @@ if (mongoose.models["Ticket"]) {
         type: Number,
         default: 0,
       },
+      apuesta: {
+        type: Schema.Types.ObjectId,
+        ref: "apuestas",
+      },
     },
     { timestamps: true }
   );

@@ -22,9 +22,8 @@ export const GET = async (request) => {
       createdAt: { $gte: today, $lt: new Date(tomorrow) },
       status: "ACTIVE",
     }); */
-
     const apuesta = await apuestaModel
-      .findOne()
+      .findOne({ status: "ACTIVE" })
       .sort({ field: "asc", _id: -1 })
       .limit(1);
 

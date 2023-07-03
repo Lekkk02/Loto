@@ -12,12 +12,13 @@ const Table = () => {
     return data;
   };
 
-  const getTickets = () => {
-    const { data, error, isLoading } = useSWR("/api/tickets", fetcher);
+  const getTickets = (id) => {
+    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
     return data;
   };
-  const data = getTickets();
   const data2 = getApuestas();
+  console.log(data2);
+  const data = getTickets(data2?._id);
 
   const renderTableHeader = () => {
     if (!data) return null;
@@ -31,7 +32,7 @@ const Table = () => {
         {header.map((key, index) => {
           return (
             <th key={index} className="border border-black text-lg ">
-              {key[0].toUpperCase() + key[key.length - 1]}
+              {key[0].toUpperCase() + key.substring(7)}
             </th>
           );
         })}

@@ -14,15 +14,13 @@ export default function Home() {
     return data;
   };
 
-  const getTickets = () => {
-    const { data, error, isLoading } = useSWR("/api/tickets", fetcher);
+  const getTickets = (id) => {
+    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
     return data;
   };
-  const data = getTickets();
   const data2 = getApuestas();
-
-  console.log(data);
   console.log(data2);
+  const data = getTickets(data2?._id);
 
   const stat = (data) => {
     if (data == null || data == undefined) {
