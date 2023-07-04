@@ -33,9 +33,8 @@ export default function Home() {
   if (stat(data2) == false) {
     return (
       <div>
-        <h1 className="font-medium text-2xl text-center py-64 min-w-[400px] tex">
-          ¡Todavía no se han abierto apuestas!<br></br>Compra tu ticket en tu
-          sede más cercana
+        <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
+          Cargando apuesta....
         </h1>
       </div>
     );
