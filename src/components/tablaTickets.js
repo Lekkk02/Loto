@@ -7,6 +7,8 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 const Table = () => {
+  const [recordsToShow, setRecordsToShow] = useState(10);
+
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
     return data;
@@ -94,7 +96,8 @@ const Table = () => {
         return item.posicion;
       }
     };
-    return data?.map((item, index) => {
+    const records = data?.slice(0, recordsToShow);
+    return records?.map((item, index) => {
       console.log(data);
       const carrerasArray = Object.entries(item.carreras);
       carrerasArray.sort((a, b) => {
@@ -103,16 +106,19 @@ const Table = () => {
         return aNumber - bNumber;
       });
       const carrerasOrdenadas = Object.fromEntries(carrerasArray);
+      if (item.posicion == "N°2" && item.puntos == 0) {
+        item.posicion = "";
+      }
       return (
         <>
-          <tr>
+          <tr key={index}>
             <td key={item.posicion} className="border-b border-black">
               {getPos(item, index)}
             </td>
             <td key={item.ticketSerial} className="border-b border-black">
               {item.ticketSerial}
             </td>
-            <td key={item.ticketSerial} className="border-b border-black">
+            <td key={`Caballo${index}`} className="border-b border-black">
               CABALLO:
             </td>
             {Object.keys(carrerasOrdenadas).map((i) => {
@@ -122,7 +128,7 @@ const Table = () => {
                 </td>
               );
             })}
-            <td key={item.puntos} className="border-b border-black">
+            <td key={`puntos${index}`} className="border-b border-black">
               {item.puntos}
             </td>{" "}
           </tr>
@@ -145,6 +151,14 @@ const Table = () => {
             {renderTableData()}
           </tbody>
         </table>
+        {recordsToShow < data?.length && (
+          <button
+            className="rounded-lg bg-green-500 w-24 h-10 my-4"
+            onClick={() => setRecordsToShow(recordsToShow + 10)}
+          >
+            Cargar más
+          </button>
+        )}
       </div>
     );
   }

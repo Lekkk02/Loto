@@ -13,6 +13,10 @@ if (mongoose.models["Ticket"]) {
         type: String,
         required: true,
       },
+      cajero: {
+        type: String,
+        required: true,
+      },
       nombre: {
         type: String,
         required: true,
