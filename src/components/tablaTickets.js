@@ -2,13 +2,16 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+import ReactModal from "react-modal";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 const Table = () => {
   const [recordsToShow, setRecordsToShow] = useState(10);
-
+  const [buscado, setBuscado] = useState("");
+  let [tickets, setTickets] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
     return data;
@@ -43,7 +46,7 @@ const Table = () => {
     );
   };
 
-  const renderTableData = () => {
+  const renderTableData = (id) => {
     let arr = [];
     console.log(data2);
     console.log(data);
@@ -52,12 +55,24 @@ const Table = () => {
       let segundoLugar = data2?.carreras[apuesta].segundo;
       let tercerLugar = data2?.carreras[apuesta].tercero;
       data?.map((ticket) => {
-        if (ticket.carreras[apuesta].primer == primerLugar) {
+        if (
+          ticket.carreras[apuesta].primer == primerLugar &&
+          !ticket.carreras[apuesta].addedPoints
+        ) {
           ticket["puntos"] += 5;
-        } else if (ticket.carreras[apuesta].primer == segundoLugar) {
+          ticket.carreras[apuesta].addedPoints = true;
+        } else if (
+          ticket.carreras[apuesta].primer == segundoLugar &&
+          !ticket.carreras[apuesta].addedPoints
+        ) {
           ticket["puntos"] += 3;
-        } else if (ticket.carreras[apuesta].primer == tercerLugar) {
+          ticket.carreras[apuesta].addedPoints = true;
+        } else if (
+          ticket.carreras[apuesta].primer == tercerLugar &&
+          !ticket.carreras[apuesta].addedPoints
+        ) {
           ticket["puntos"] += 1;
+          ticket.carreras[apuesta].addedPoints = true;
         }
       });
     });
@@ -97,45 +112,96 @@ const Table = () => {
       }
     };
     const records = data?.slice(0, recordsToShow);
-    return records?.map((item, index) => {
-      console.log(data);
-      const carrerasArray = Object.entries(item.carreras);
-      carrerasArray.sort((a, b) => {
-        const aNumber = parseInt(a[0].replace("carrera", ""));
-        const bNumber = parseInt(b[0].replace("carrera", ""));
-        return aNumber - bNumber;
+    if (buscado == null || buscado == undefined || buscado == "") {
+      return records?.map((item, index) => {
+        console.log(data);
+        const carrerasArray = Object.entries(item.carreras);
+        carrerasArray.sort((a, b) => {
+          const aNumber = parseInt(a[0].replace("carrera", ""));
+          const bNumber = parseInt(b[0].replace("carrera", ""));
+          return aNumber - bNumber;
+        });
+        const carrerasOrdenadas = Object.fromEntries(carrerasArray);
+        if (
+          (item.posicion == "N°2" && item.puntos == 0) ||
+          (item.posicion == "N°1" && item.puntos == 0)
+        ) {
+          item.posicion = "";
+        }
+        return (
+          <>
+            <tr key={index}>
+              <td key={item.posicion} className="border-b border-black">
+                {getPos(item, index)}
+              </td>
+              <td key={item.ticketSerial} className="border-b border-black">
+                {item.ticketSerial}
+              </td>
+              <td key={`Caballo${index}`} className="border-b border-black">
+                CABALLO:
+              </td>
+              {Object.keys(carrerasOrdenadas).map((i) => {
+                return (
+                  <td className="border-b border-black">
+                    {carrerasOrdenadas[i].primer}
+                  </td>
+                );
+              })}
+              <td key={`puntos${index}`} className="border-b border-black">
+                {item.puntos}
+              </td>{" "}
+            </tr>
+          </>
+        );
       });
-      const carrerasOrdenadas = Object.fromEntries(carrerasArray);
-      if (item.posicion == "N°2" && item.puntos == 0) {
-        item.posicion = "";
-      }
-      return (
-        <>
-          <tr key={index}>
-            <td key={item.posicion} className="border-b border-black">
-              {getPos(item, index)}
-            </td>
-            <td key={item.ticketSerial} className="border-b border-black">
-              {item.ticketSerial}
-            </td>
-            <td key={`Caballo${index}`} className="border-b border-black">
-              CABALLO:
-            </td>
-            {Object.keys(carrerasOrdenadas).map((i) => {
-              return (
-                <td className="border-b border-black">
-                  {carrerasOrdenadas[i].primer}
+    } else {
+      return records
+        ?.filter((element) => element.ticketSerial == id)
+        .map((item, index) => {
+          console.log(data);
+          const carrerasArray = Object.entries(item.carreras);
+          carrerasArray.sort((a, b) => {
+            const aNumber = parseInt(a[0].replace("carrera", ""));
+            const bNumber = parseInt(b[0].replace("carrera", ""));
+            return aNumber - bNumber;
+          });
+          const carrerasOrdenadas = Object.fromEntries(carrerasArray);
+          if (
+            (item.posicion == "N°2" && item.puntos == 0) ||
+            (item.posicion == "N°1" && item.puntos == 0)
+          ) {
+            item.posicion = "";
+          }
+          return (
+            <>
+              <tr key={index}>
+                <td key={item.posicion} className="border-b border-black">
+                  {getPos(item, index)}
                 </td>
-              );
-            })}
-            <td key={`puntos${index}`} className="border-b border-black">
-              {item.puntos}
-            </td>{" "}
-          </tr>
-        </>
-      );
-    });
+                <td key={item.ticketSerial} className="border-b border-black">
+                  {item.ticketSerial}
+                </td>
+                <td key={`Caballo${index}`} className="border-b border-black">
+                  CABALLO:
+                </td>
+                {Object.keys(carrerasOrdenadas).map((i) => {
+                  return (
+                    <td className="border-b border-black">
+                      {carrerasOrdenadas[i].primer}
+                    </td>
+                  );
+                })}
+                <td key={`puntos${index}`} className="border-b border-black">
+                  {item.puntos}
+                </td>{" "}
+              </tr>
+            </>
+          );
+        });
+    }
   };
+
+  const buscarTicket = () => {};
 
   if (data2 == undefined || data2 == null) {
     return (
@@ -144,11 +210,25 @@ const Table = () => {
   } else {
     return (
       <div className="text-center my-14">
-        <h1 className="font-medium text-2xl">Listado de tickets</h1>
+        <hr></hr>
+
+        <h1 className="font-medium text-xl mb-2">¡Busca tu ticket!</h1>
+        <form className="flex flex-col items-center" onSubmit={buscarTicket}>
+          <input
+            type="text"
+            placeholder="Serial del ticket"
+            value={buscado}
+            onChange={(e) => setBuscado(e.target.value)}
+            className=" border border-black rounded-md p-1 text-center w-1/3"
+          ></input>
+        </form>
+
+        <hr className="my-4"></hr>
+        <h1 className="font-medium text-2xl mt-8">Listado de tickets</h1>
         <table id="students" className="w-full">
           <tbody>
             <tr className="border border-black">{renderTableHeader()}</tr>
-            {renderTableData()}
+            {renderTableData(buscado)}
           </tbody>
         </table>
         {recordsToShow < data?.length && (

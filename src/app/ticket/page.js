@@ -12,8 +12,8 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  const [apuestas, setApuestas] = useState(null);
-  const [objCarreras, setCarreras] = useState(null);
+  const [apuestas, setApuestas] = useState([]);
+  const [objCarreras, setCarreras] = useState([]);
   const [nombre, setNombre] = useState("");
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -33,16 +33,16 @@ export default function Home() {
       });
   }, []);
 
-  const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
-    return data;
-  };
-
-  const getApuestas = () => {
-    const { data, error, isLoading } = useSWR(`/api/apuestas`, fetcher);
-    return data;
-  };
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("/api/apuestas")
+        .then((response) => response.json())
+        .then((data) => {
+          setApuestas(data);
+        });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const carrerasKeys = Object.keys(objCarreras);
@@ -103,7 +103,17 @@ export default function Home() {
     }));
   };
 
+  if (apuestas?.status == "INACTIVE") {
+    return (
+      <h1 className="text-2xl text-center py-64 font-bold">
+        La apuesta actual está cerrada, no es posible facturar más tickets...
+      </h1>
+    );
+  }
+
   if (
+    apuestas == null ||
+    apuestas == undefined ||
     objCarreras == null ||
     objCarreras == undefined ||
     caballos == undefined ||
