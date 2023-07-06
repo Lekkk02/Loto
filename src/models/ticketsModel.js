@@ -1,6 +1,9 @@
-import { Int32 } from "mongodb";
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+
+const AutoIncrementFactory = require("mongoose-sequence");
+const connection = await mongoose.createConnection(process.env.MONGO);
+const AutoIncrement = AutoIncrementFactory(connection);
 
 let Ticket;
 
@@ -40,6 +43,7 @@ if (mongoose.models["Ticket"]) {
     },
     { timestamps: true }
   );
+  ticketSchema.plugin(AutoIncrement, { inc_field: "ticketSerial" });
   Ticket = mongoose.model("Ticket", ticketSchema);
 }
 

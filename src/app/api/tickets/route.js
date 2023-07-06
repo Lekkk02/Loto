@@ -30,33 +30,15 @@ export const GET = async (request) => {
 export const POST = async (request) => {
   const body = await request.json();
   var offset = -4;
-  /* 
-  const carreras = {
-    carrera1: {
-      primer: "2",
-    },
-    carrera2: {
-      primer: "3",
-    },
-    carrera3: {
-      primer: "5",
-    },
-    carrera4: {
-      primer: "8",
-    },
-    carrera5: {
-      primer: "10",
-    },
-  };
- */
+
   const today = new Date(new Date().getTime() + offset * 3600 * 1000);
   body.createdAt = today;
   const newTicket = new ticketsModel(body);
   try {
     await connect();
     await newTicket.save();
-
-    return new NextResponse("Ticket created", { status: 201 });
+    const ticketSerial = newTicket.ticketSerial;
+    return new NextResponse(ticketSerial, { status: 201 });
   } catch (error) {
     return new NextResponse("Database Error", { status: 500 });
   }

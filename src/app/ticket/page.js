@@ -43,6 +43,7 @@ export default function Home() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const carrerasKeys = Object.keys(objCarreras);
@@ -74,9 +75,10 @@ export default function Home() {
       let apuesta = apuestas._id;
       let puntos;
       let cajero = "MaikelTest";
+      let serialTicket;
       console.log("Check is true");
       try {
-        await fetch("/api/tickets", {
+        const ticket = await fetch("/api/tickets", {
           method: "POST",
           body: JSON.stringify({
             nombre,
@@ -88,6 +90,8 @@ export default function Home() {
             cajero,
           }),
         });
+        const respuesta = await ticket.json();
+        console.log(respuesta);
       } catch (err) {
         console.log(err);
       }
