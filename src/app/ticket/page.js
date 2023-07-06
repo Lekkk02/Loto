@@ -1,12 +1,7 @@
 "use client";
-import useSWR from "swr";
 import { useState, useEffect } from "react";
-import { redirect } from "next/dist/server/api-utils";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import axios from "axios";
-import { set } from "mongoose";
+
+import jsPDF from "jspdf";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
@@ -90,7 +85,38 @@ export default function Home() {
             cajero,
           }),
         });
+        function formatDate(date) {
+          const day = date.getDate().toString().padStart(2, "0");
+          const month = (date.getMonth() + 1).toString().padStart(2, "0");
+          const year = date.getFullYear().toString().substr(-2);
+
+          return `${day}/${month}/${year}`;
+        }
+        const today = new Date(new Date().getTime() + -4 * 3600 * 1000);
+
         const respuesta = await ticket.json();
+        const pdf = new jsPDF();
+
+        pdf.text(`FECHA DE IMPRESIÓN: ${formatDate(today)}`, 10, 10);
+        pdf.text(`Nombre: ${nombre}`, 10, 15);
+        pdf.text(`Cedula: ${cedula}`, 10, 30);
+        pdf.text(`Telefono: ${telefono}`, 10, 40);
+        pdf.text(`Cajero: ${cajero}`, 10, 50);
+
+        pdf.save("factura.pdf");
+
+        const file = new Blob([pdf.output()], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+
+        pdfjsLib.getDocument(fileURL).promise.then((pdf) => {
+          const printPDF = () => {
+            window.print();
+          };
+          pdf.getMetadata().then((metadata) => {
+            console.log(metadata);
+            printPDF();
+          });
+        });
         console.log(respuesta);
       } catch (err) {
         console.log(err);
