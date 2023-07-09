@@ -96,7 +96,7 @@ export default function Home() {
 
         const respuesta = await ticket.json();
         const pdf = new jsPDF();
-
+        
         pdf.text(`FECHA DE IMPRESIÓN: ${formatDate(today)}`, 10, 10);
         pdf.text(`Nombre: ${nombre}`, 10, 15);
         pdf.text(`Cedula: ${cedula}`, 10, 30);
