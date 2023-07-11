@@ -10,8 +10,6 @@ const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 const Table = () => {
   const [recordsToShow, setRecordsToShow] = useState(10);
   const [buscado, setBuscado] = useState("");
-  let [tickets, setTickets] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
     return data;
@@ -22,34 +20,40 @@ const Table = () => {
     return data;
   };
   const data2 = getApuestas();
-  console.log(data2);
   const data = getTickets(data2?._id);
 
   const renderTableHeader = () => {
     if (!data) return null;
     let header = Object.keys(data2.carreras);
     return (
-      <>
-        <th className="border border-black text-lg ">Pos°</th>
-        <th className="border border-black text-lg  ">Ticket</th>
-        <th className=""></th>
-
+      <tr className="border border-black" key="headerListado">
+        <th className="border border-black text-lg " key="PosHeader">
+          Pos°
+        </th>
+        <th className="border border-black text-lg  " key="TicketHeader">
+          Ticket
+        </th>
+        <th className="" key="CaballosHeader"></th>
         {header.map((key, index) => {
           return (
-            <th key={index} className="border border-black text-lg ">
+            <th
+              key={"header" + key + index}
+              className="border border-black text-lg "
+            >
               {key[0].toUpperCase() + key.substring(7)}
             </th>
           );
         })}
-        <th className="text-lg  ">Puntos</th>
-      </>
+        <th className="text-lg" key="PuntosHeader">
+          Puntos
+        </th>
+      </tr>
     );
   };
 
   const renderTableData = (id) => {
     let arr = [];
-    console.log(data2);
-    console.log(data);
+
     Object.keys(data2?.carreras).map((apuesta, index) => {
       let primerLugar = data2?.carreras[apuesta].primero;
       let segundoLugar = data2?.carreras[apuesta].segundo;
@@ -114,7 +118,6 @@ const Table = () => {
     const records = data?.slice(0, recordsToShow);
     if (buscado == null || buscado == undefined || buscado == "") {
       return records?.map((item, index) => {
-        console.log(data);
         const carrerasArray = Object.entries(item.carreras);
         carrerasArray.sort((a, b) => {
           const aNumber = parseInt(a[0].replace("carrera", ""));
@@ -130,26 +133,41 @@ const Table = () => {
         }
         return (
           <>
-            <tr key={index}>
-              <td key={item.posicion} className="border-b border-black">
+            <tr key={"record" + item.ticketSerial + index}>
+              <td
+                key={item.posicion + index + "POSICION"}
+                className="border-b border-black"
+              >
                 {getPos(item, index)}
               </td>
-              <td key={item.ticketSerial} className="border-b border-black">
+              <td
+                key={item.ticketSerial + index}
+                className="border-b border-black"
+              >
                 {item.ticketSerial}
               </td>
-              <td key={`Caballo${index}`} className="border-b border-black">
+              <td
+                key={`Caballo${index}` + index}
+                className="border-b border-black"
+              >
                 CABALLO:
               </td>
-              {Object.keys(carrerasOrdenadas).map((i) => {
+              {Object.keys(carrerasOrdenadas).map((i, contadore) => {
                 return (
-                  <td className="border-b border-black">
+                  <td
+                    className="border-b border-black"
+                    key={i + index + contadore}
+                  >
                     {carrerasOrdenadas[i].primer}
                   </td>
                 );
               })}
-              <td key={`puntos${index}`} className="border-b border-black">
+              <td
+                key={`puntos${index}` + "POSI"}
+                className="border-b border-black"
+              >
                 {item.puntos}
-              </td>{" "}
+              </td>
             </tr>
           </>
         );
@@ -158,7 +176,6 @@ const Table = () => {
       return records
         ?.filter((element) => element.ticketSerial == id)
         .map((item, index) => {
-          console.log(data);
           const carrerasArray = Object.entries(item.carreras);
           carrerasArray.sort((a, b) => {
             const aNumber = parseInt(a[0].replace("carrera", ""));
@@ -174,26 +191,41 @@ const Table = () => {
           }
           return (
             <>
-              <tr key={index}>
-                <td key={item.posicion} className="border-b border-black">
+              <tr key={index + "ALL"}>
+                <td
+                  key={item.posicion + index + "POSICION"}
+                  className="border-b border-black"
+                >
                   {getPos(item, index)}
                 </td>
-                <td key={item.ticketSerial} className="border-b border-black">
+                <td
+                  key={item.ticketSerial + index}
+                  className="border-b border-black"
+                >
                   {item.ticketSerial}
                 </td>
-                <td key={`Caballo${index}`} className="border-b border-black">
+                <td
+                  key={`Caballo${index}` + "CAB"}
+                  className="border-b border-black"
+                >
                   CABALLO:
                 </td>
-                {Object.keys(carrerasOrdenadas).map((i) => {
+                {Object.keys(carrerasOrdenadas).map((i, contadore) => {
                   return (
-                    <td className="border-b border-black">
+                    <td
+                      className="border-b border-black"
+                      key={i + index + contadore}
+                    >
                       {carrerasOrdenadas[i].primer}
                     </td>
                   );
                 })}
-                <td key={`puntos${index}`} className="border-b border-black">
+                <td
+                  key={`puntos${item + index}`}
+                  className="border-b border-black"
+                >
                   {item.puntos}
-                </td>{" "}
+                </td>
               </tr>
             </>
           );
@@ -201,47 +233,49 @@ const Table = () => {
     }
   };
 
-  const buscarTicket = () => {};
-
   if (data2 == undefined || data2 == null) {
     return (
       <h1 className="text-center font-bold text-2xl py-64">Cargando...</h1>
     );
-  } else {
+  }
+  if (!data2) {
     return (
-      <div className="text-center my-14">
-        <hr></hr>
-
-        <h1 className="font-medium text-xl mb-2">¡Busca tu ticket!</h1>
-        <form className="flex flex-col items-center" onSubmit={buscarTicket}>
-          <input
-            type="text"
-            placeholder="Serial del ticket"
-            value={buscado}
-            onChange={(e) => setBuscado(e.target.value)}
-            className=" border border-black rounded-md p-1 text-center w-1/3"
-          ></input>
-        </form>
-
-        <hr className="my-4"></hr>
-        <h1 className="font-medium text-2xl mt-8">Listado de tickets</h1>
-        <table id="students" className="w-full">
-          <tbody>
-            <tr className="border border-black">{renderTableHeader()}</tr>
-            {renderTableData(buscado)}
-          </tbody>
-        </table>
-        {recordsToShow < data?.length && (
-          <button
-            className="rounded-lg bg-green-500 w-24 h-10 my-4"
-            onClick={() => setRecordsToShow(recordsToShow + 10)}
-          >
-            Cargar más
-          </button>
-        )}
-      </div>
+      <h1 className="text-center font-bold text-2xl py-64">Cargando...</h1>
     );
   }
+  return (
+    <div className="text-center my-14">
+      <hr></hr>
+
+      <h1 className="font-medium text-xl mb-2">¡Busca tu ticket!</h1>
+      <form className="flex flex-col items-center">
+        <input
+          type="text"
+          placeholder="Serial del ticket"
+          value={buscado}
+          onChange={(e) => setBuscado(e.target.value)}
+          className=" border border-black rounded-md p-1 text-center w-1/3"
+        ></input>
+      </form>
+
+      <hr className="my-4"></hr>
+      <h1 className="font-medium text-2xl mt-8">Listado de tickets</h1>
+      <table id="students" className="w-full" key="ticketTable">
+        <tbody>
+          {renderTableHeader()}
+          {renderTableData(buscado)}
+        </tbody>
+      </table>
+      {recordsToShow < data?.length && (
+        <button
+          className="rounded-lg bg-green-500 w-24 h-10 my-4"
+          onClick={() => setRecordsToShow(recordsToShow + 10)}
+        >
+          Cargar más
+        </button>
+      )}
+    </div>
+  );
 };
 
 export default Table;

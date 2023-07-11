@@ -19,38 +19,13 @@ const Table = () => {
   const data2 = getTickets();
   const data = getApuestas();
 
-  /* const [data, setData] = useState([
-    {
-      nombre: "Juan",
-      apellido: "Pérez",
-      edad: {
-        item1: { campo1: "20", campo2: "30", campo3: "40" },
-        item2: { campo1: "25", campo2: "35", campo3: "45" },
-      },
-    },
-    {
-      nombre: "María",
-      apellido: "González",
-      edad: {
-        item1: { campo1: "30", campo2: "40", campo3: "50" },
-        item2: { campo1: "35", campo2: "45", campo3: "55" },
-      },
-    },
-  ]);
- */
-
   const renderTableHeader = () => {
-    /*     if (!data) return null;
-    let header = Object.keys(data[0].carreras);
-    return header.map((key, index) => {
-      return <th key={index}>{key.toUpperCase()}</th>;
-    }); */
     return (
       <>
-        <th>Carrera</th>
-        <th>Retirados</th>
-        <th>Fav. Gaceta</th>
-        <th>Llegada</th>{" "}
+        <th key="headerApuestaCarrera">Carrera</th>
+        <th key="headerApuestaRetirados">Retirados</th>
+        <th key="headerApuestaFav">Fav. Gaceta</th>
+        <th key="headerApuestaLlegada">Llegada</th>
       </>
     );
   };
@@ -59,28 +34,41 @@ const Table = () => {
     const { hipodromo, carreras, status } = data;
     return (
       <>
-        {Object.keys(carreras).map((key) => (
-          <tr key={data.hipodromo}>
-            <td className="border border-black text-lg">
+        {Object.keys(carreras).map((key, index) => (
+          <tr key={data.hipodromo + index}>
+            <td className="border border-black text-lg" key={key}>
               Carrera {key.substring(7)}
             </td>
-            <td className="border border-black text-lg">
+            <td
+              className="border border-black text-lg"
+              key={key + "retirados" + index}
+            >
               {carreras[key].retirados}
             </td>
-            <td className="border border-black text-lg">
+            <td
+              className="border border-black text-lg"
+              key={key + "favGaceta" + index}
+            >
               {carreras[key].favGaceta}
             </td>
-            <td key={key} className="border border-black">
-              <p className="font-bold">
-                N°1: <span className="font-light">{carreras[key].primero}</span>
+            <td key={"llegada" + index} className="border border-black">
+              <p className="font-bold" key={"Num1" + index}>
+                N°1:
+                <span className="font-light" key={"Span1" + index}>
+                  {carreras[key].primero}
+                </span>
               </p>
-              <p className="font-bold">
+              <p className="font-bold" key={"Num2" + index}>
                 N°2:
-                <span className="font-light"> {carreras[key].segundo} </span>
+                <span className="font-light" key={"Span2" + index}>
+                  {carreras[key].segundo}
+                </span>
               </p>
-              <p className="font-bold">
-                N°3:{" "}
-                <span className="font-light"> {carreras[key].tercero}</span>
+              <p className="font-bold" key={"Num3" + index}>
+                N°3:
+                <span className="font-light" key={"Span3" + index}>
+                  {carreras[key].tercero}
+                </span>
               </p>
             </td>
           </tr>
@@ -94,7 +82,7 @@ const Table = () => {
       <h1 className="font-medium text-2xl">Estado de las carreras</h1>
       <table id="students" className="w-full">
         <tbody>
-          <tr>{renderTableHeader()}</tr>
+          <tr key="header">{renderTableHeader()}</tr>
           {renderTableData()}
         </tbody>
       </table>

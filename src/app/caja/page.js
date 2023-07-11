@@ -1,14 +1,29 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Session } from "next-auth";
 import useSWR from "swr";
+import bcrypt from "bcryptjs";
+
+import { useSession } from "next-auth/react";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 const Home = () => {
+  const { data: session, status: status } = useSession();
+  console.log(session, status);
   const cajero = "CarlosTest";
 
+  const generate = async () => {
+    const password = "contraseña";
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    console.log(hashedPassword);
+  };
+
+  console.log("Hashed Password: " + generate());
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/active", fetcher);
     return data;
@@ -26,16 +41,13 @@ const Home = () => {
     return (
       <h1 className="font-bold text-2xl text-center py-24">Cargando...</h1>
     );
-  console.log(apuestaActiva);
 
-  console.log(tickets);
   let arrTickets = [];
   tickets.map((ticket) => {
     if (ticket["cajero"] == cajero) {
       arrTickets.push(ticket);
     }
   });
-  console.log(arrTickets);
   const totalPollas = arrTickets.length;
   const totalDinero = totalPollas * 2 * 0.2;
   return (
