@@ -18,8 +18,6 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials, req) {
-        /*         const user = { id: "1", fullname: "J. Smith", email: "john@gmail.com" };
-         */
         await connect();
         console.log(credentials);
         const userFound = await Cajero.findOne({
