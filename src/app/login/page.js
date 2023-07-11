@@ -13,7 +13,6 @@ const LoginPage = () => {
 
     const username = usernameInput;
     const password = passwordInput;
-    console.log(username + " - " + password);
     const res = await signIn("credentials", {
       username,
       password,
@@ -41,7 +40,7 @@ const LoginPage = () => {
             <div className="bg-red-500 text-white p-2 mb-2">{error}</div>
           )}
 
-          <label for="txtCedula">Usuario</label>
+          <label htmlFor="txtUsuario">Usuario</label>
           <input
             type="text"
             name="usuario"
@@ -49,10 +48,11 @@ const LoginPage = () => {
             placeholder="Nombre de cajero"
             value={usernameInput}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="off"
             className="rounded-md p-1 my-2 text-center"
           ></input>
 
-          <label for="txtCedula">Contraseña</label>
+          <label htmlFor="txtContraseña">Contraseña</label>
           <input
             type="password"
             name="contraseña"
@@ -60,13 +60,14 @@ const LoginPage = () => {
             value={passwordInput}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Contraseña"
+            autoComplete="off"
             className="rounded-md p-1 my-2 text-center"
           ></input>
 
           <button
             type="submit"
             name="button"
-            className="border border-black mt-6 py-1 rounded-md cursor-pointer"
+            className="border border-black mt-6 py-1 rounded-md cursor-pointer hover:bg-gray-200"
           >
             Iniciar sesión
           </button>
