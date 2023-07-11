@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connect from "@/utils/db";
-import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import Cajero from "@/models/cajeroModel";
 
@@ -9,6 +8,7 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "credentials",
+      id: "credentials",
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Username" },
         password: {
@@ -37,7 +37,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ account, token, user, profile, session }) {
+    jwt({ token, user }) {
       if (user) token.user = user;
       return token;
     },
@@ -46,6 +46,9 @@ const handler = NextAuth({
       session.user = token.user;
       return session;
     },
+  },
+  pages: {
+    signIn: "/login",
   },
 });
 

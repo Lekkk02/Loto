@@ -15,15 +15,6 @@ const Home = () => {
   console.log(session, status);
   const cajero = "CarlosTest";
 
-  const generate = async () => {
-    const password = "contraseña";
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    console.log(hashedPassword);
-  };
-
-  console.log("Hashed Password: " + generate());
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/active", fetcher);
     return data;
