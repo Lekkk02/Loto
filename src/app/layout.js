@@ -2,9 +2,11 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import AuthProvider from "@/components/authProvider";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
-let isLogged = true;
+const { data: session, status: status } = useSession();
 
 const renderOp = (check) => {
   if (check) {
@@ -42,7 +44,22 @@ export default function RootLayout({ children }) {
                   Inicio
                 </Link>
               </div>
-              {renderOp(isLogged)}
+              {session ? (
+                <>
+                  <div>
+                    <Link href="/caja" className="font-bold text-md">
+                      Perfil
+                    </Link>
+                  </div>
+                  <div>
+                    <Link href="/ticket" className="font-bold text-md">
+                      Crear ticket
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <br></br>
+              )}
             </div>
           </nav>
           {children}

@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 const LoginPage = () => {
   const [usernameInput, setUsername] = useState("");
   const [passwordInput, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Submitting...");
@@ -25,6 +26,7 @@ const LoginPage = () => {
     console.log(res);
     console.log(error);
   };
+
   return (
     <main>
       <div className="flex flex-col items-center p-56">

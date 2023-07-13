@@ -1,12 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import jsPDF from "jspdf";
+import { useRouter } from "next/navigation";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
+  const { data: session, status: status } = useSession();
+
+  const router = useRouter();
+  if (!session) {
+    router.push("/login");
+    return null;
+  }
   const [apuestas, setApuestas] = useState([]);
   const [objCarreras, setCarreras] = useState([]);
   const [nombre, setNombre] = useState("");
@@ -69,7 +78,7 @@ export default function Home() {
       const carreras = objCarreras;
       let apuesta = apuestas._id;
       let puntos;
-      let cajero = "MaikelTest";
+      const cajero = session.user?.username;
       let serialTicket;
       console.log("Check is true");
       try {
@@ -96,7 +105,7 @@ export default function Home() {
 
         const respuesta = await ticket.json();
         const pdf = new jsPDF();
-        
+
         pdf.text(`FECHA DE IMPRESIÓN: ${formatDate(today)}`, 10, 10);
         pdf.text(`Nombre: ${nombre}`, 10, 15);
         pdf.text(`Cedula: ${cedula}`, 10, 30);

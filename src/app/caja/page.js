@@ -11,9 +11,17 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 const Home = () => {
+  const router = useRouter();
   const { data: session, status: status } = useSession();
   console.log(session, status);
-  const cajero = "CarlosTest";
+  let cajero;
+
+  if (!session) {
+    router.push("/login");
+    return null;
+  } else {
+    cajero = session.user.username;
+  }
 
   const getApuestas = () => {
     const { data, error, isLoading } = useSWR("/api/active", fetcher);

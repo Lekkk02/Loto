@@ -18,7 +18,11 @@ if (mongoose.models["Cajeros"]) {
       },
       sede: {
         type: String,
-        default: "ACTIVE",
+        default: "A FIJAR",
+      },
+      rol: {
+        type: String,
+        default: "CAJA",
       },
     },
     { timestamps: true }
