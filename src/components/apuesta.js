@@ -68,11 +68,11 @@ export default function Home() {
         <h1 className="font-bold">
           Total a repartir:
           <span className="font-light s  ml-2">
-            {stat(data) * 2 * 0.6}
-            {"$)"}
+            {(stat(data) * 2 * 0.6).toFixed(2)}
+            {"$"}
           </span>
         </h1>
-        <h1 className="font-l">Primer lugar:</h1>
+        <h1 className="font-l">Primer lugar: </h1>
         <h1 className="font-medium">Segundo lugar:</h1>
         <hr className="block border-1 border-black w-full"></hr>
         <h1 className="font-bold">Premios por jugador </h1>

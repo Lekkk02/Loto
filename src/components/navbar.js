@@ -40,7 +40,7 @@ export default function NavBar() {
           <>
             <div>
               <Link
-                href="/caja"
+                href="/perfil"
                 className="font-bold text-md hover:text-gray-600"
               >
                 Perfil
