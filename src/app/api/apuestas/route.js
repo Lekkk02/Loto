@@ -50,3 +50,19 @@ export const POST = async (request) => {
     return new NextResponse("Database Error", { status: 500 });
   }
 };
+
+export const PUT = async (request) => {
+  const fieldtoUpdate = await request.json();
+  console.log(fieldtoUpdate);
+  try {
+    await connect();
+    const updatedApuesta = await apuestaModel.findOneAndUpdate(
+      { status: "ACTIVE" },
+      { $set: fieldtoUpdate },
+      { new: true }
+    );
+    return new NextResponse("Apuesta created", { status: 201 });
+  } catch (error) {
+    return new NextResponse("Database Error", { status: 500 });
+  }
+};

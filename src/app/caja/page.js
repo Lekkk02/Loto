@@ -24,7 +24,7 @@ const Home = () => {
   }
 
   const getApuestas = () => {
-    const { data, error, isLoading } = useSWR("/api/active", fetcher);
+    const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
     return data;
   };
 

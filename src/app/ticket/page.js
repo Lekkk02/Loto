@@ -3,19 +3,18 @@ import { useState, useEffect } from "react";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import jsPDF from "jspdf";
-import { useRouter } from "next/navigation";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { data: session, status: status } = useSession();
-
   const router = useRouter();
   if (!session) {
-    router.push("/login");
-    return null;
+    if (status == "unauthenticated") {
+      router.push("/login");
+    }
   }
+
   const [apuestas, setApuestas] = useState([]);
   const [objCarreras, setCarreras] = useState([]);
   const [nombre, setNombre] = useState("");
@@ -104,29 +103,14 @@ export default function Home() {
         const today = new Date(new Date().getTime() + -4 * 3600 * 1000);
 
         const respuesta = await ticket.json();
-        const pdf = new jsPDF();
-
-        pdf.text(`FECHA DE IMPRESIÓN: ${formatDate(today)}`, 10, 10);
-        pdf.text(`Nombre: ${nombre}`, 10, 15);
-        pdf.text(`Cedula: ${cedula}`, 10, 30);
-        pdf.text(`Telefono: ${telefono}`, 10, 40);
-        pdf.text(`Cajero: ${cajero}`, 10, 50);
-
-        pdf.save("factura.pdf");
-
-        const file = new Blob([pdf.output()], { type: "application/pdf" });
-        const fileURL = URL.createObjectURL(file);
-
-        pdfjsLib.getDocument(fileURL).promise.then((pdf) => {
-          const printPDF = () => {
-            window.print();
-          };
-          pdf.getMetadata().then((metadata) => {
-            console.log(metadata);
-            printPDF();
-          });
-        });
-        console.log(respuesta);
+        const doc = new jsPDF();
+        doc.text(
+          "Sigo esperando la información de la factura para hacerla",
+          10,
+          10
+        );
+        doc.save(`Factura - ${respuesta}.pdf`);
+        window.location.reload();
       } catch (err) {
         console.log(err);
       }
@@ -173,7 +157,7 @@ export default function Home() {
           >
             <p className="relative -top-8 text-lg font-bold">Facturar ticket</p>
             <p id="alerta" className="font-bold text-red-500 text-lg my-2"></p>
-            <label for="txtNombre">Nombre </label>
+            <label htmlFor="txtNombre">Nombre </label>
             <input
               type="text"
               name="nombre"
@@ -183,7 +167,7 @@ export default function Home() {
               placeholder="Nombre del comprador"
               className="rounded-md p-1 my-2"
             ></input>
-            <label for="txtCedula">Cédula </label>
+            <label htmlFor="txtCedula">Cédula </label>
             <input
               type="text"
               name="cedula"
@@ -203,8 +187,9 @@ export default function Home() {
                   className="rounded-md h-6 my-2"
                   value={objCarreras[key].primer}
                   onChange={handleChange}
+                  defaultValue={"DEFAULT"}
                 >
-                  <option value="" disabled selected>
+                  <option value={"DEFAULT"} disabled>
                     Seleccione caballo
                   </option>
 
@@ -216,7 +201,7 @@ export default function Home() {
                 </select>
               </div>
             ))}
-            <label for="txtTelf">Teléfono</label>
+            <label htmlFor="txtTelf">Teléfono</label>
             <input
               type="text"
               name="telefono"
