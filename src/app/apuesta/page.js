@@ -13,7 +13,7 @@ export default function Home() {
 
   const router = useRouter();
   if (!session) {
-    if (status == "unauthenticated") {
+    if (estatus == "unauthenticated") {
       router.push("/login");
     }
   }
