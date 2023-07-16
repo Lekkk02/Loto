@@ -59,7 +59,6 @@ export default function Home() {
         const alert = document.getElementById("alerta");
         alert.textContent = "INGRESE TODOS LOS CAMPOS...";
         check = false;
-        console.log("Check is false");
         break;
       }
     }
@@ -79,7 +78,6 @@ export default function Home() {
       let puntos;
       const cajero = session.user?.username;
       let serialTicket;
-      console.log("Check is true");
       try {
         const ticket = await fetch("/api/tickets", {
           method: "POST",
@@ -100,22 +98,46 @@ export default function Home() {
 
           return `${day}/${month}/${year}`;
         }
-        const today = new Date(new Date().getTime() + -4 * 3600 * 1000);
+        const today = new Date(new Date().getTime() + 0 * 3600 * 1000);
 
         const respuesta = await ticket.json();
         const doc = new jsPDF();
-        doc.text(
-          "Sigo esperando la información de la factura para hacerla",
-          10,
-          10
-        );
+
+        var hours = today.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        });
+
+        doc.text(`${cajero}`, 5, 10);
+        doc.text(`${formatDate(today)} - ${hours}`, 5, 17);
+        doc.text(`CI: ${cedula}`, 5, 24);
+        doc.text(`Nombre:${nombre}`, 5, 31);
+        doc.text(`SERIAL: ${respuesta}`, 5, 38);
+        doc.text(`-------------------------------`, 5, 45);
+        doc.text(`POLLA X PUNTOS`, 5, 52);
+        doc.text(`-------------------------------`, 5, 59);
+        doc.text(`HIP: ${apuestas.hipodromo}`, 5, 66);
+        doc.text("-------------------------------", 5, 73);
+        let y = 80;
+
+        for (const carrera in carreras) {
+          const { primer } = carreras[carrera];
+          const primeraLetra = "Carrera";
+          const ultimaLetra = carrera.substring(7);
+          const text = `${primeraLetra}${ultimaLetra} - Caballo ${primer}`;
+          doc.text(text, 5, y);
+          y += 7;
+        }
+        doc.text("-------------------------------", 5, y);
+        doc.text("VALOR POLLA: 2$", 5, y + 7);
+
         doc.save(`Factura - ${respuesta}.pdf`);
         window.location.reload();
       } catch (err) {
         console.log(err);
       }
     }
-    console.log(objCarreras);
   };
 
   const handleChange = (event) => {
