@@ -2,15 +2,21 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 const LoginPage = () => {
   const [usernameInput, setUsername] = useState("");
   const [passwordInput, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
-
+  const { data: session, status: status } = useSession();
+  if (session) {
+    if (status == "authenticated") {
+      router.push("/");
+    }
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Submitting...");
 
     const username = usernameInput;
     const password = passwordInput;
