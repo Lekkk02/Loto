@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-import jsPDF from "jspdf";
-import printJS from "print-js";
 
 import { useRouter } from "next/navigation";
 
