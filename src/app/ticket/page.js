@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import jsPDF from "jspdf";
+import printJS from "print-js";
 
 import { useRouter } from "next/navigation";
 
@@ -78,6 +79,7 @@ export default function Home() {
       let puntos;
       const cajero = session.user?.username;
       let serialTicket;
+      const hipodromo = apuestas.hipodromo;
       try {
         const ticket = await fetch("/api/tickets", {
           method: "POST",
@@ -89,6 +91,7 @@ export default function Home() {
             puntos,
             apuesta,
             cajero,
+            hipodromo,
           }),
         });
         function formatDate(date) {
@@ -101,7 +104,7 @@ export default function Home() {
         const today = new Date(new Date().getTime() + 0 * 3600 * 1000);
 
         const respuesta = await ticket.json();
-        const doc = new jsPDF();
+        /* const doc = new jsPDF();
 
         var hours = today.toLocaleString("en-US", {
           hour: "numeric",
@@ -132,8 +135,8 @@ export default function Home() {
         doc.text("-------------------------------", 5, y);
         doc.text("VALOR POLLA: 2$", 5, y + 7);
 
-        doc.save(`Factura - ${respuesta}.pdf`);
-        window.location.reload();
+        doc.save(`Factura - ${respuesta}.pdf`); */
+        router.push(`/factura/${respuesta}`);
       } catch (err) {
         console.log(err);
       }

@@ -47,4 +47,11 @@ if (mongoose.models["Ticket"]) {
   Ticket = mongoose.model("Ticket", ticketSchema);
 }
 
+Ticket.schema.add({
+  hipodromo: {
+    type: String,
+    required: true,
+  },
+});
+
 export default Ticket;
