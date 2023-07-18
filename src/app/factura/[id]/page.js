@@ -55,26 +55,46 @@ export default async function Factura({ params }) {
   });
   const { carreras } = ticket;
   console.log(carreras.carrera1);
+
   return (
-    <div className="font-sans font-normal mt-2 ml-2">
-      <p>{ticket.cajero}</p>
-      <p>{formatDate(date) + " - " + hours}</p>
-      <p>CI: {ticket.cedula}</p>
-      <p>NOMBRE: {ticket.nombre}</p>
-      <p>SERIAL: {ticket.ticketSerial}</p>
-      <p>-------------------------------</p>
-      <p> POLLA X PUNTOS</p>
-      <p>-------------------------------</p>
-      <p>HIP: {ticket.hipodromo}</p>
-      <p>-------------------------------</p>
-      {Object.keys(carreras).map((carrera) => (
-        <p>
-          Carr.{carrera.substring(7)} - Caballo {carreras[carrera].primer}
-        </p>
-      ))}
-      <p>-------------------------------</p>
-      <p>VALOR POLLA: 2$</p>
+    <body className="bg-white ml-2">
+      <br></br>
+      {ticket.cajero}
+      <br></br>
+      {formatDate(date) + " - " + hours}
+      <br></br>
+      CI: {ticket.cedula}
+      <br></br>
+      NOMBRE: {ticket.nombre}
+      <br></br>
+      SERIAL: {ticket.ticketSerial}
+      <br></br>
+      -------------------------------
+      <br></br>
+      POLLA X PUNTOS
+      <br></br>
+      -------------------------------
+      <br></br>
+      HIP: {ticket.hipodromo}
+      <br></br>
+      -------------------------------
+      <br></br>
+      {Object.keys(carreras).map((carrera) => {
+        return (
+          <>
+            {"Carr." +
+              carrera.substring(7) +
+              "- Caballo " +
+              carreras[carrera].primer}
+            <br></br>{" "}
+          </>
+        );
+      })}
+      -------------------------------
+      <br></br>
+      VALOR POLLA: 2$
+      <br></br>
       <Imprimir />
-    </div>
+    </body>
   );
 }
