@@ -148,7 +148,7 @@ export default function Home() {
               `Carr.${key.split("carrera")[1]}- Caballo ${carreras[key].primer}`
           )
           .join("\n");
-        const contenidoArchivo = `${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${apuestas.hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$`;
+        const contenidoArchivo = `${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${apuestas.hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\n----------------------`;
         const archivo = new File(
           [contenidoArchivo],
           `Factura - ${respuesta}.txt`,
