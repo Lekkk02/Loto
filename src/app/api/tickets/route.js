@@ -19,7 +19,7 @@ export const GET = async (request) => {
       createdAt: { $gte: new Date(tomorrow), $lt: new Date(tomorrow) },
     }); */
     const ticket = await ticketsModel
-      .find({ createdAt: { $gte: today, $lt: tomorrow } })
+      .find()
       .select("ticketSerial carreras puntos -_id");
     return new NextResponse(JSON.stringify(ticket), { status: 200 });
   } catch (err) {

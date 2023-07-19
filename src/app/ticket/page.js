@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
+import { saveAs } from "file-saver";
 
 import { useRouter } from "next/navigation";
 
@@ -102,6 +103,12 @@ export default function Home() {
         const today = new Date(new Date().getTime() + 0 * 3600 * 1000);
 
         const respuesta = await ticket.json();
+        var hours = today.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        });
+        const fecha = formatDate(today) + " - " + hours;
         /* const doc = new jsPDF();
 
         var hours = today.toLocaleString("en-US", {
@@ -134,6 +141,30 @@ export default function Home() {
         doc.text("VALOR POLLA: 2$", 5, y + 7);
 
         doc.save(`Factura - ${respuesta}.pdf`); */
+
+        const carrerasTexto = Object.keys(carreras)
+          .map(
+            (key) =>
+              `Carr.${key.split("carrera")[1]}- Caballo ${carreras[key].primer}`
+          )
+          .join("\n");
+        const contenidoArchivo = `${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n-------------------------------\nPOLLA X PUNTOS\n-------------------------------\nHIP: ${apuestas.hipodromo}\n-------------------------------\n${carrerasTexto}\n-------------------------------\nVALOR POLLA: 2$`;
+        const archivo = new File(
+          [contenidoArchivo],
+          `Factura - ${respuesta}.txt`,
+          {
+            type: "text/plain;charset=utf-8",
+          }
+        );
+        /*     saveAs(archivo);
+         */ const url = URL.createObjectURL(archivo);
+        const nuevaVentana = window.open(url);
+
+        // Abrir la ventana de impresión del navegador en la misma ventana donde se abrió el archivo de texto
+        nuevaVentana.onload = () => {
+          nuevaVentana.print();
+        };
+
         router.push(`/factura/${respuesta}`);
       } catch (err) {
         console.log(err);

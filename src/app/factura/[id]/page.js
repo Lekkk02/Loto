@@ -55,6 +55,12 @@ export default async function Factura({ params }) {
   });
   const { carreras } = ticket;
   console.log(carreras.carrera1);
+  const cajeroIn = ticket.cajero;
+  const fechaIn = formatDate(date) + " - " + hours;
+  const cedulaIn = ticket.cedula;
+  const nombreIn = ticket.nombre;
+  const serialIn = ticket.ticketSerial;
+  const hipodromoIn = ticket.hipodromo;
 
   return (
     <body className="bg-white ml-2">
@@ -94,7 +100,15 @@ export default async function Factura({ params }) {
       <br></br>
       VALOR POLLA: 2$
       <br></br>
-      <Imprimir />
+      <Imprimir
+        cajero={cajeroIn}
+        nombre={nombreIn}
+        fecha={fechaIn}
+        cedula={cedulaIn}
+        serial={serialIn}
+        hipodromo={hipodromoIn}
+        carreras={carreras}
+      />
     </body>
   );
 }
