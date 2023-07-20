@@ -63,7 +63,7 @@ export default async function Factura({ params }) {
   const hipodromoIn = ticket.hipodromo;
 
   return (
-    <body className="bg-white ml-2">
+    <div className="ml-2">
       <br></br>
       {ticket.cajero}
       <br></br>
@@ -109,6 +109,6 @@ export default async function Factura({ params }) {
         hipodromo={hipodromoIn}
         carreras={carreras}
       />
-    </body>
+    </div>
   );
 }

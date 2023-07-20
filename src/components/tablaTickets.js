@@ -51,8 +51,6 @@ const Table = () => {
   };
 
   const renderTableData = (id) => {
-    let arr = [];
-
     Object.keys(data2?.carreras).map((apuesta, index) => {
       let primerLugar = data2?.carreras[apuesta].primero;
       let segundoLugar = data2?.carreras[apuesta].segundo;
@@ -172,7 +170,7 @@ const Table = () => {
         );
       });
     } else {
-      return records
+      return data
         ?.filter((element) => element.ticketSerial == id)
         .map((item, index) => {
           const carrerasArray = Object.entries(item.carreras);

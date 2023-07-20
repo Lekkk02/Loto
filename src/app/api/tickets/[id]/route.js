@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import connect from "@/utils/db";
 import ticketsModel from "@/models/ticketsModel";
+import { getToken } from "next-auth/jwt";
 
-export const GET = async (request, { params }) => {
+export const GET = async (req, { params }) => {
   const { id } = params;
   //fetch
   try {

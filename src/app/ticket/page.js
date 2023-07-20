@@ -165,7 +165,7 @@ export default function Home() {
           nuevaVentana.print();
         };
 
-        router.push(`/factura/${respuesta}`);
+        window.location.reload();
       } catch (err) {
         console.log(err);
       }
