@@ -20,14 +20,8 @@ async function getData(id) {
 
 export default async function Factura({ params }) {
   const { id } = params;
-  const data = await getData(id);
-  const cajero = data.cajero;
-  const nombre = data.nombre;
-  const fecha = data.createdAt;
-  const cedula = data.cedula;
-  const serial = data.ticketSerial;
-  const hipodromo = data.hipodromo;
-  const carreras = data.carreras;
+  const ticket = await getData(id);
+  const data = ticket.toJSON();
   if (!data) {
     return (
       <h1 className="p-64 text-2xl font-bold text-center">
@@ -35,7 +29,13 @@ export default async function Factura({ params }) {
       </h1>
     );
   }
-
+  const cajero = data.cajero;
+  const nombre = data.nombre;
+  const fecha = data.createdAt;
+  const cedula = data.cedula;
+  const serial = data.ticketSerial;
+  const carreras = data.carreras;
+  const hipodromo = data.hipodromo;
   return (
     <DatosFactura
       cajero={cajero}

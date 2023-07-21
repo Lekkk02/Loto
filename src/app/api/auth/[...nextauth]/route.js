@@ -23,7 +23,7 @@ const handler = NextAuth({
         const userFound = await Cajero.findOne({
           username: credentials.username,
         });
-        console.log(userFound.password);
+
         if (!userFound) throw new Error("Invalid credentials");
         const passwordMatch = await bcrypt.compare(
           credentials.password,
@@ -31,7 +31,7 @@ const handler = NextAuth({
         );
         if (!passwordMatch) throw new Error("Invalid credentials");
 
-        console.log(userFound);
+        /* console.log(userFound); */
         return userFound;
       },
     }),
@@ -42,8 +42,8 @@ const handler = NextAuth({
       return token;
     },
     session({ session, token }) {
-      console.log(session, token);
-      session.user = token.user;
+      /*       console.log(session, token);
+       */ session.user = token.user;
       return session;
     },
   },

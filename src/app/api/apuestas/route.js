@@ -49,13 +49,13 @@ export const POST = async (req) => {
   }
 };
 
-export const PUT = async (request) => {
+export const PUT = async (req) => {
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
   if (token) {
-    const fieldtoUpdate = await request.json();
+    const fieldtoUpdate = await req.json();
     console.log(fieldtoUpdate);
     try {
       await connect();

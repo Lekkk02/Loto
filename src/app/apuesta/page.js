@@ -33,5 +33,9 @@ export default function Home() {
       </h1>
     );
   }
-  return status == "ACTIVE" ? <CerrarApuesta /> : <Apuesta />;
+  if (session) {
+    if (estatus == "authenticated") {
+      return status == "ACTIVE" ? <CerrarApuesta /> : <Apuesta />;
+    }
+  }
 }

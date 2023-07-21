@@ -13,15 +13,18 @@
     "bcryptjs": "^2.4.3",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.31",
     "mongodb": "^5.6.0",
     "mongoose": "^6.11.1",
     "mongoose-sequence": "^5.3.1",
     "next": "13.4.6",
     "next-auth": "^4.22.1",
+    "pdf-lib": "^1.17.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.1",
+    "save-as": "^0.1.8",
     "swr": "^2.2.0",
     "tailwindcss": "3.3.2"
   }
