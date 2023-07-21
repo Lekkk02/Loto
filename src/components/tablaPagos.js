@@ -9,11 +9,7 @@ export default function Home() {
   const [tickets, setTickets] = useState([]);
   const [cajeros, setCajeros] = useState([]);
   const router = useRouter();
-  if (!session) {
-    if (status == "unauthenticated") {
-      router.push("/login");
-    }
-  }
+
   useEffect(() => {
     fetch("/api/apuestas")
       .then((response) => response.json())

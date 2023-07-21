@@ -33,7 +33,7 @@ const DatosFactura = (props) => {
         hour12: true,
         timeZone: "UTC",
       });
-
+      const trueDate = formatDate(date) + " - " + hours;
       return (
         <div className="ml-2">
           <br></br>
@@ -75,7 +75,7 @@ const DatosFactura = (props) => {
           <Imprimir
             cajero={cajero}
             nombre={nombre}
-            fecha={fecha}
+            fecha={trueDate}
             cedula={cedula}
             serial={serial}
             hipodromo={hipodromo}

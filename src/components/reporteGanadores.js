@@ -14,7 +14,7 @@ const Reporte = () => {
   };
 
   const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
+    const { data, error, isLoading } = useSWR(`/api/reporte/${id}`, fetcher);
     return data;
   };
   const data2 = getApuestas();
@@ -97,7 +97,7 @@ const Reporte = () => {
 
   const generate = async () => {
     const doc = new jsPDF();
-    const tableColumn = ["Carrera", "Primer"];
+    const tableColumn = ["Posicion", "Serial", "Cedula", "Telefono"];
     const tableRows = [];
 
     data
@@ -105,9 +105,11 @@ const Reporte = () => {
         return ticket.posicion == "N°1" || ticket.posicion == "N°2";
       })
       .forEach((ticket) => {
-        const carrera = Object.keys(ticket.carreras)[0];
-        const primer = ticket.carreras[carrera].primer;
-        tableRows.push([carrera, primer]);
+        const posicion = ticket.posicion;
+        const serial = ticket.ticketSerial;
+        const cedula = ticket.cedula;
+        const telefono = ticket.telefono;
+        tableRows.push([posicion, serial, cedula, telefono]);
       });
 
     const totalPages = Math.ceil(tableRows.length / 20);

@@ -17,6 +17,7 @@ export default function Home() {
   }
 
   const [apuestas, setApuestas] = useState([]);
+  const [carrerasRetirados, setCarrerasRetirados] = useState([]);
   const [objCarreras, setCarreras] = useState([]);
   const [nombre, setNombre] = useState("");
   const [cedula, setCedula] = useState("");
@@ -29,6 +30,7 @@ export default function Home() {
       .then((data) => {
         setApuestas(data);
         setCaballos(data.caballos);
+        setCarrerasRetirados(data.carreras);
         const carrerasObj = {};
         Object.keys(data.carreras).forEach((key) => {
           carrerasObj[key] = { primer: data.carreras[key].primer };
@@ -208,6 +210,7 @@ export default function Home() {
                   className="rounded-md p-1 my-2"
                   maxLength={8}
                 ></input>
+
                 {Object.keys(objCarreras).map((key) => (
                   <div key={key} className="flex flex-col">
                     <label htmlFor={key}>{key.toUpperCase()}</label>
@@ -223,11 +226,18 @@ export default function Home() {
                         Seleccione caballo
                       </option>
 
-                      {caballos.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
+                      {caballos
+                        .filter(
+                          (caballo) =>
+                            !carrerasRetirados[key].retirados
+                              .split(",")
+                              .includes(caballo.toString())
+                        )
+                        .map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 ))}
