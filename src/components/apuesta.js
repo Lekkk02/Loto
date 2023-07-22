@@ -33,7 +33,7 @@ export default function Home() {
     return (
       <div>
         <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
-          Cargando apuesta....
+          Bienvenido a Apuestatupolla.com....
         </h1>
       </div>
     );
@@ -41,7 +41,7 @@ export default function Home() {
   if (!data2) {
     return (
       <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
-        Cargando apuesta....
+        Bienvenido a Apuestatupolla.com....
       </h1>
     );
   }

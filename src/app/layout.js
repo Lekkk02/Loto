@@ -9,6 +9,10 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <title>Bienvenido a ApuestaTuPolla.com</title>
+        <meta name="description" content="Apuesta a carreras de caballos" />
+      </head>
       <AuthProvider>
         <body className={inter.className}>
           <NavBar />
