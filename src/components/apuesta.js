@@ -1,6 +1,7 @@
 "use client";
 import useSWR from "swr";
 import Table from "@/components/tabla";
+import { useState, useEffect } from "react";
 /* const getData = async () => {
   const data = await fetch("/api/tickets");
   return data.json();
@@ -9,17 +10,23 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  const getApuestas = () => {
-    const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
-    return data;
-  };
+  const [data, setTickets] = useState([]);
+  const [data2, setApuestas] = useState([]);
 
-  const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
-    return data;
-  };
-  const data2 = getApuestas();
-  const data = getTickets(data2?._id);
+  useEffect(() => {
+    fetch("/api/apuestas")
+      .then((response) => response.json())
+      .then((data) => {
+        setApuestas(data);
+        if (data != undefined) {
+          fetch(`/api/tickets/${data?._id}`)
+            .then((response2) => response2.json())
+            .then((data2) => {
+              setTickets(data2);
+            });
+        }
+      });
+  }, []);
 
   const stat = (data) => {
     if (data == null || data == undefined) {
