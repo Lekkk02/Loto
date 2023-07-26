@@ -31,4 +31,12 @@ if (mongoose.models["Apuesta"]) {
   Apuesta = mongoose.model("Apuesta", apuestaSchema);
 }
 
+Apuesta.schema.add({
+  mensaje: {
+    type: String,
+    default: "",
+    required: false,
+  },
+});
+
 export default Apuesta;

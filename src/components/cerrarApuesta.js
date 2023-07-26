@@ -1,7 +1,4 @@
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useState, useEffect } from "react";
-import connect from "@/utils/db";
 export default function CerrarApuesta() {
   const [apuestaActiva, setApuesta] = useState([]);
   useEffect(() => {

@@ -33,7 +33,7 @@ export default function Home() {
     return (
       <div>
         <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
-          Bienvenido a Apuestatupolla.com....
+          ¡Bienvenido a SellaTuPolla.com!
         </h1>
       </div>
     );
@@ -41,7 +41,7 @@ export default function Home() {
   if (!data2) {
     return (
       <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
-        Bienvenido a Apuestatupolla.com....
+        ¡Bienvenido a SellaTuPolla.com!
       </h1>
     );
   }
@@ -62,6 +62,13 @@ export default function Home() {
               {stat(data)} Pollas
             </span>
           </h1>
+          {data2.mensaje == "" ? (
+            <p></p>
+          ) : (
+            <h1 className="font-bold text-xl text-red-500 mt-4">
+              {data2.mensaje}
+            </h1>
+          )}
         </div>
       </div>
       <div className="py-6 text-lg items-center flex flex-col  bg-gray-200 border border-gray-300">

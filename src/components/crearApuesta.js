@@ -22,7 +22,6 @@ export default function Home() {
       check = false;
     }
     if (check) {
-      console.log("Check is true");
       let status;
 
       let carrerasFiltradas = carrerasInput
@@ -51,10 +50,7 @@ export default function Home() {
         };
       }
       const hipodromo = hipodromoInput;
-      console.log(hipodromo);
-      console.log(carreras);
-      console.log(caballos);
-      console.log(status);
+
       try {
         await fetch("/api/apuestas", {
           method: "POST",
@@ -80,45 +76,42 @@ export default function Home() {
           "
         >
           <p className="relative -top-10 text-lg font-bold ">Abrir apuesta</p>
-          <label for="txtCedula">Hipódromo </label>
+          <label htmlFor="txtCedula">Hipódromo </label>
           <input
             type="text"
             name="hipodromo"
             id="txtHipodromo"
-            value={hipodromoInput}
+            value={hipodromoInput == null ? "" : hipodromoInput}
             onChange={(e) => setHipodromo(e.target.value)}
             placeholder="Hipódromo de las carreras"
             className="rounded-md p-1 my-2"
           ></input>
-          <label for="txtCedula">Carreras</label>
+          <label htmlFor="txtCedula">Carreras</label>
           <input
             type="text"
             name="carreras"
             id="txtCarreras"
-            value={carrerasInput}
+            value={carrerasInput == null ? "" : carrerasInput}
             onChange={(e) => setCarreras(e.target.value)}
             placeholder="EJ: 1,2,3,4,5,6,7"
             className="rounded-md p-1 my-2"
             pattern="^\d+(,\d+)*$"
           ></input>
-          <label for="txtCedula">Caballos a participar</label>
+          <label htmlFor="txtCedula">Caballos a participar</label>
           <input
             type="text"
             name="caballos"
             id="txtCaballos"
-            value={caballosInput}
+            value={caballosInput == null ? "" : caballosInput}
             onChange={(e) => setCaballos(e.target.value)}
             placeholder="EJ: 1,2,3,4,5,6,7"
             className="rounded-md p-1 my-2"
             pattern="^([a-zA-Z0-9]+,)*[a-zA-Z0-9]+$"
           ></input>
 
-          <input
-            className="cursor-pointer"
-            type="submit"
-            name="button"
-            value="Crear apuesta"
-          />
+          <button className="cursor-pointer" type="submit" name="button">
+            Crear Apuesta
+          </button>
         </form>
       </div>
     </main>

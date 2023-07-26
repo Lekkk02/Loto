@@ -102,7 +102,10 @@ const Reporte = () => {
 
     data
       .filter((ticket) => {
-        return ticket.posicion == "N°1" || ticket.posicion == "N°2";
+        return (
+          (ticket.posicion == "N°1" && ticket.puntos != 0) ||
+          (ticket.posicion == "N°2" && ticket.puntos != 0)
+        );
       })
       .forEach((ticket) => {
         const posicion = ticket.posicion;

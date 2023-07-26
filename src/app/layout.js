@@ -10,8 +10,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>Bienvenido a ApuestaTuPolla.com</title>
-        <meta name="description" content="Apuesta a carreras de caballos" />
+        <title>SELLATUPOLLA.com</title>
+        <meta
+          name="description"
+          content="Apuesta tu polla en SellaTuPolla.com"
+        />
       </head>
       <AuthProvider>
         <body className={inter.className}>

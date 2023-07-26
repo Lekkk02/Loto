@@ -129,44 +129,42 @@ const Table = () => {
           item.posicion = "";
         }
         return (
-          <>
-            <tr key={"record" + item.ticketSerial + index}>
-              <td
-                key={item.posicion + index + "POSICION"}
-                className="border-b border-black"
-              >
-                {getPos(item, index)}
-              </td>
-              <td
-                key={item.ticketSerial + index}
-                className="border-b border-black"
-              >
-                {item.ticketSerial}
-              </td>
-              <td
-                key={`Caballo${index}` + index}
-                className="border-b border-black"
-              >
-                CABALLO:
-              </td>
-              {Object.keys(carrerasOrdenadas).map((i, contadore) => {
-                return (
-                  <td
-                    className="border-b border-black"
-                    key={i + index + contadore}
-                  >
-                    {carrerasOrdenadas[i].primer}
-                  </td>
-                );
-              })}
-              <td
-                key={`puntos${index}` + "POSI"}
-                className="border-b border-black"
-              >
-                {item.puntos}
-              </td>
-            </tr>
-          </>
+          <tr key={"record" + item.ticketSerial + index}>
+            <td
+              key={item.posicion + index + "POSICION"}
+              className="border-b border-black"
+            >
+              {getPos(item, index)}
+            </td>
+            <td
+              key={item.ticketSerial + index}
+              className="border-b border-black"
+            >
+              {item.ticketSerial}
+            </td>
+            <td
+              key={`Caballo${index}` + index}
+              className="border-b border-black"
+            >
+              CABALLO:
+            </td>
+            {Object.keys(carrerasOrdenadas).map((i, contadore) => {
+              return (
+                <td
+                  className="border-b border-black"
+                  key={i + index + contadore}
+                >
+                  {carrerasOrdenadas[i].primer}
+                </td>
+              );
+            })}
+            <td
+              key={`puntos${index}` + "POSI"}
+              className="border-b border-black"
+            >
+              {item.puntos}
+            </td>
+          </tr>
         );
       });
     } else {
