@@ -228,14 +228,9 @@ const Table = () => {
     }
   };
 
-  if (data2 == undefined || data2 == null) {
+  if (!data2 || !data) {
     return (
-      <h1 className="text-center font-bold text-2xl py-64">Cargando...</h1>
-    );
-  }
-  if (!data2) {
-    return (
-      <h1 className="text-center font-bold text-2xl py-64">Cargando...</h1>
+      <h2 className="text-center font-bold text-2xl py-64">Cargando...</h2>
     );
   }
   return (
