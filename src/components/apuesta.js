@@ -38,11 +38,9 @@ export default function Home() {
 
   if (stat(data2) == false) {
     return (
-      <div>
-        <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
-          ¡Bienvenido a SellaTuPolla.com!
-        </h1>
-      </div>
+      <h1 className="font-bold text-2xl text-center py-64 min-w-[400px] tex">
+        ¡Bienvenido a SellaTuPolla.com!
+      </h1>
     );
   }
   if (!data2) {
