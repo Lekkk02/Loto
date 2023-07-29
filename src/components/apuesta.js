@@ -79,7 +79,7 @@ export default function Home() {
       <div className="py-6 text-lg items-center flex flex-col  bg-gray-200 border border-gray-300">
         <h1 className="font-bold">
           Total a repartir:
-          <span className="font-light s  ml-2">
+          <span className="font-light ml-2">
             {(stat(data) * 2 * 0.6).toFixed(2)}
             {"$"}
           </span>
