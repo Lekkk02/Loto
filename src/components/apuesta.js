@@ -87,7 +87,7 @@ export default function Home() {
         <h1 className="font-l">Primer lugar: </h1>
         <h1 className="font-medium">Segundo lugar:</h1>
         <hr className="block border-1 border-black w-full"></hr>
-        <h1 className="font-bold">Premios por jugador </h1>
+        <h1 className="font-bold">Premios por ganador </h1>
         <h1>Primer lugar:</h1>
         <h1>Segundo lugar:</h1>
       </div>
