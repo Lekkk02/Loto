@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
         <title>SELLATUPOLLA.com - ¡Sella tu polla!</title>
         <meta
           name="description"
-          content="¡Sella tu polla! Sella tu polla ya con nosotros. Apuesta tu polla en SELLATUPOLLA.COM"
+          content="Sellatupolla - Sella tu polla ya con nosotros. Apuesta tu polla en SELLATUPOLLA.COM"
         />
       </head>
       <AuthProvider>
