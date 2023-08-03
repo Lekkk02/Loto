@@ -26,9 +26,13 @@ const LoginPage = () => {
       redirect: false,
     });
     if (res?.error) {
-      return setError(error);
+      console.log(res.error);
+      return setError(res.error);
     }
-    if (res?.ok) return router.push("/");
+    if (res?.ok) {
+      return router.push("/");
+    }
+
     console.log(res);
     console.log(error);
   };
@@ -45,7 +49,9 @@ const LoginPage = () => {
             Inicio de Sesión
           </p>
           {error && (
-            <div className="bg-red-500 text-white p-2 mb-2">{error}</div>
+            <div className="bg-red-500 text-white p-2 mb-2 relative -top-5">
+              {error}
+            </div>
           )}
 
           <label htmlFor="txtUsuario">Usuario</label>

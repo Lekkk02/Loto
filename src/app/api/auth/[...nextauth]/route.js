@@ -5,6 +5,12 @@ import bcrypt from "bcryptjs";
 import Cajero from "@/models/cajeroModel";
 
 const handler = NextAuth({
+  session: {
+    maxAge: 86400,
+  },
+  jwt: {
+    maxAge: 86400,
+  },
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -24,12 +30,12 @@ const handler = NextAuth({
           username: credentials.username,
         });
 
-        if (!userFound) throw new Error("Invalid credentials");
+        if (!userFound) throw new Error("Usuario/Contraseña inválidos");
         const passwordMatch = await bcrypt.compare(
           credentials.password,
           userFound.password
         );
-        if (!passwordMatch) throw new Error("Invalid credentials");
+        if (!passwordMatch) throw new Error("Usuario/Contraseña inválidos");
 
         /* console.log(userFound); */
         return userFound;

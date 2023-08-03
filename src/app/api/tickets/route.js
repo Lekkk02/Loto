@@ -18,8 +18,7 @@ export const GET = async (req) => {
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      console.log("Today date", today);
-      console.log("Tomorrow Date ", tomorrow);
+
       /*     const ticket = await ticketsModel.find({ createdAt: { $gte: today } });
        */
       /*     const ticket = await ticketsModel.find({
