@@ -208,7 +208,6 @@ export default function Home() {
                   id="txtCedula"
                   placeholder="Cédula del comprador"
                   className="rounded-md p-1 my-2"
-                  maxLength={8}
                 ></input>
 
                 {Object.keys(objCarreras).map((key) => (

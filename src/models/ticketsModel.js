@@ -52,6 +52,14 @@ Ticket.schema.add({
     type: String,
     required: true,
   },
+  reclamado: {
+    type: String,
+    default: "NO",
+  },
+  cobrado_por: {
+    type: String,
+    default: "NO",
+  },
 });
 
 export default Ticket;
