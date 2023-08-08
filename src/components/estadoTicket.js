@@ -110,10 +110,35 @@ const Estado = (props) => {
   }
 
   const dineroTotal = tickets?.length * 2 * 0.6;
-  console.log(dineroTotal);
+  const dineroPrimerLugar = dineroTotal * 0.7;
+  const dineroSegundoLugar = dineroTotal * 0.3;
+  const totalPrimer = tickets.filter((ticket) => {
+    return ticket.posicion == "N°1";
+  }).length;
+  const totalSegundo = tickets.filter((ticket) => {
+    return ticket.posicion == "N°2";
+  }).length;
+
+  const primerLugar_Ganador = (dineroPrimerLugar / totalPrimer).toFixed(2);
+  const segundoLugar_Ganador = (dineroSegundoLugar / totalSegundo).toFixed(2);
+  console.log(totalPrimer);
+  console.log(totalSegundo);
+  console.log(dineroPrimerLugar.toFixed(2));
+  console.log(dineroSegundoLugar.toFixed(2));
+  console.log(primerLugar_Ganador);
+  console.log(segundoLugar_Ganador);
+
   return (
     <div className="m-8">
-      <h1 className="text-center font-medium text-xl">DATOS DEL TICKET</h1>
+      <h1 className="text-center font-medium text-xl my-3">DATOS DEL TICKET</h1>
+      <p className="font-bold text-lg ">
+        Fecha de compra:{" "}
+        <span className="text-lg font-normal">
+          {selected.createdAt.substring(0, 10) +
+            " | " +
+            selected.createdAt.substring(11, 19)}
+        </span>
+      </p>
       <p className="font-bold text-lg ">
         Serial:{" "}
         <span className="text-lg font-normal">{selected.ticketSerial} </span>{" "}
@@ -130,21 +155,94 @@ const Estado = (props) => {
         Telefono del comprador:{" "}
         <span className="text-lg font-normal">{selected.telefono} </span>{" "}
       </p>
+      <hr className="border-gray-300 my-1"></hr>
+      <p className="font-bold text-lg">
+        Hipodromo:{" "}
+        <span className="text-lg font-normal">{selected.hipodromo} </span>{" "}
+      </p>
+      <p className="font-bold text-lg">
+        Pollas totales de la apuesta:{" "}
+        <span className="text-lg font-normal">{tickets.length} </span>{" "}
+      </p>
       <p className="font-bold text-lg">
         Puntaje: <span className="text-lg font-normal">{selected.puntos} </span>{" "}
       </p>
-      <p className="font-bold text-lg">
-        Posición:{" "}
-        <span className="text-lg font-normal">{selected.posicion} </span>{" "}
-      </p>
-      {selected.posicion == "N°1" || selected.posicion == "N°2" ? (
+
+      {selected.posicion != "N°1" && selected.posicion != "N°2" ? (
         <p className="font-bold text-lg">
-          PREMIO CORRESPONDIDO:{" "}
-          <span className="text-lg font-normal">{selected.puntos} </span>{" "}
+          Estado:
+          <span className="text-lg font-normal"> TICKET PERDEDOR</span>{" "}
         </p>
-      ) : (
-        <p>No aplica</p>
-      )}
+      ) : selected.posicion == "N°1" ? (
+        <>
+          <p className="font-bold text-lg">
+            Estado:
+            <span className="text-lg font-normal"> TICKET GANADOR</span>{" "}
+          </p>
+          <p className="font-bold text-lg">
+            Posición:{" "}
+            <span className="text-lg font-normal">{selected.posicion}</span>{" "}
+          </p>
+          <p className="font-bold text-lg">
+            PREMIO CORRESPONDIDO:{" "}
+            <span className="text-lg font-normal">{primerLugar_Ganador}$ </span>{" "}
+          </p>
+          {selected.reclamado != "NO" ? (
+            <>
+              <p className="font-bold text-2xl my-2 text-center text-green-700">
+                TICKET COBRADO
+              </p>
+              <p className="font-bold text-lg my-2 text-center text-green-700">
+                PROCESADO POR CAJERO:{" "}
+                <span className="text-lg font-normal text-black">
+                  {selected.cobrado_por}
+                </span>{" "}
+              </p>{" "}
+            </>
+          ) : (
+            <>
+              <button>COBRAR</button>
+            </>
+          )}
+        </>
+      ) : selected.posicion == "N°2" ? (
+        <>
+          <p className="font-bold text-lg">
+            Estado:
+            <span className="text-lg font-normal"> TICKET GANADOR</span>{" "}
+          </p>
+          <p className="font-bold text-lg">
+            Posición:{" "}
+            <span className="text-lg font-normal">{selected.posicion}</span>{" "}
+          </p>
+          <p className="font-bold text-lg">
+            PREMIO CORRESPONDIDO:{" "}
+            <span className="text-lg font-normal">
+              {segundoLugar_Ganador}${" "}
+            </span>{" "}
+          </p>
+          {selected.reclamado != "NO" ? (
+            <>
+              <p className="font-bold text-2xl my-2 text-center text-green-700">
+                TICKET COBRADO
+              </p>
+              <p className="font-bold text-lg my-2 text-center text-green-700">
+                PROCESADO POR CAJERO:{" "}
+                <span className="text-lg font-normal text-black">
+                  {selected.cobrado_por}
+                </span>{" "}
+              </p>{" "}
+            </>
+          ) : (
+            <>
+              <button className="bg-green-500 p-4 font-bold text-2xl rounded-2xl">
+                COBRAR
+              </button>
+            </>
+          )}
+        </>
+      ) : null}
+      <hr className="border-gray-300 my-1"></hr>
     </div>
   );
 
