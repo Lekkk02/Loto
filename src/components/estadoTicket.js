@@ -33,7 +33,6 @@ const Estado = (props) => {
     return <h1 className="text-center p-64 font-bold text-2xl">Cargando...</h1>;
   }
 
-  console.log(apuestas);
   Object.keys(apuestas?.carreras).map((apuesta, index) => {
     let primerLugar = apuestas?.carreras[apuesta].primero;
     let segundoLugar = apuestas?.carreras[apuesta].segundo;
@@ -102,13 +101,7 @@ const Estado = (props) => {
     })
   ); */
 
-  console.log(ticketEstado);
-  console.log(apuestas);
-  console.log(tickets);
-
   const selected = tickets.find((ticket) => ticket.ticketSerial == id_ticket);
-  console.log(selected);
-  console.log(selected.apuesta);
   if (selected.posicion != "N°1" && selected.posicion != "N°2") {
     selected.posicion = "TICKET PERDEDOR";
   }
@@ -129,12 +122,6 @@ const Estado = (props) => {
 
   const primerLugar_Ganador = (dineroPrimerLugar / totalPrimer).toFixed(2);
   const segundoLugar_Ganador = (dineroSegundoLugar / totalSegundo).toFixed(2);
-  console.log(totalPrimer);
-  console.log(totalSegundo);
-  console.log(dineroPrimerLugar.toFixed(2));
-  console.log(dineroSegundoLugar.toFixed(2));
-  console.log(primerLugar_Ganador);
-  console.log(segundoLugar_Ganador);
 
   const handleClick = async () => {
     const ticketSerial = selected.ticketSerial;
