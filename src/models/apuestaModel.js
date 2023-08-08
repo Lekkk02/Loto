@@ -37,6 +37,10 @@ Apuesta.schema.add({
     default: "",
     required: false,
   },
+  terminada: {
+    type: String,
+    default: "N",
+  },
 });
 
 export default Apuesta;

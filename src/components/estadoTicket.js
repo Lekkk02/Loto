@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
 import useSWR from "swr";
+import { useSession } from "next-auth/react";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const Estado = (props) => {
+  const { data: session, status: status } = useSession();
+  let cajero;
+  if (session) cajero = session.user?.username;
+
   const { id_ticket } = props;
 
   const getEstado = () => {
@@ -109,6 +113,10 @@ const Estado = (props) => {
     selected.posicion = "TICKET PERDEDOR";
   }
 
+  if (selected.puntos == 0) {
+    selected.posicion = "TICKET PERDEDOR";
+  }
+
   const dineroTotal = tickets?.length * 2 * 0.6;
   const dineroPrimerLugar = dineroTotal * 0.7;
   const dineroSegundoLugar = dineroTotal * 0.3;
@@ -128,6 +136,59 @@ const Estado = (props) => {
   console.log(primerLugar_Ganador);
   console.log(segundoLugar_Ganador);
 
+  const handleClick = async () => {
+    const ticketSerial = selected.ticketSerial;
+    try {
+      const res = await fetch(`/api/estado/${ticketSerial}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          reclamado: "SI",
+          cobrado_por: cajero,
+        }),
+      });
+      if (res.ok) {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  if (apuestas.status == "ACTIVE") {
+    return (
+      <div className="m-8">
+        <h1 className="text-center font-medium text-xl my-3">
+          DATOS DEL TICKET
+        </h1>
+        <p className="font-bold text-lg ">
+          Fecha de compra:{" "}
+          <span className="text-lg font-normal">
+            {selected.createdAt.substring(0, 10) +
+              " | " +
+              selected.createdAt.substring(11, 19)}
+          </span>
+        </p>
+        <p className="font-bold text-lg ">
+          Serial:{" "}
+          <span className="text-lg font-normal">{selected.ticketSerial} </span>{" "}
+        </p>
+        <p className="font-bold text-lg">
+          Nombre del comprador:{" "}
+          <span className="text-lg font-normal">{selected.nombre} </span>{" "}
+        </p>
+        <p className="font-bold text-lg">
+          Cédula del comprador:{" "}
+          <span className="text-lg font-normal">{selected.cedula} </span>{" "}
+        </p>
+        <p className="font-bold text-lg">
+          Telefono del comprador:{" "}
+          <span className="text-lg font-normal">{selected.telefono} </span>{" "}
+        </p>
+        <h1 className="mt-8 font-bold text-2xl text-center text-red-700">
+          LA APUESTA SIGUE ACTIVA
+        </h1>
+      </div>
+    );
+  }
   return (
     <div className="m-8">
       <h1 className="text-center font-medium text-xl my-3">DATOS DEL TICKET</h1>
@@ -156,92 +217,119 @@ const Estado = (props) => {
         <span className="text-lg font-normal">{selected.telefono} </span>{" "}
       </p>
       <hr className="border-gray-300 my-1"></hr>
-      <p className="font-bold text-lg">
-        Hipodromo:{" "}
-        <span className="text-lg font-normal">{selected.hipodromo} </span>{" "}
-      </p>
-      <p className="font-bold text-lg">
-        Pollas totales de la apuesta:{" "}
-        <span className="text-lg font-normal">{tickets.length} </span>{" "}
-      </p>
-      <p className="font-bold text-lg">
-        Puntaje: <span className="text-lg font-normal">{selected.puntos} </span>{" "}
-      </p>
 
-      {selected.posicion != "N°1" && selected.posicion != "N°2" ? (
-        <p className="font-bold text-lg">
-          Estado:
-          <span className="text-lg font-normal"> TICKET PERDEDOR</span>{" "}
-        </p>
-      ) : selected.posicion == "N°1" ? (
+      {apuestas.terminada !== "N" ? (
         <>
           <p className="font-bold text-lg">
-            Estado:
-            <span className="text-lg font-normal"> TICKET GANADOR</span>{" "}
+            Hipodromo:{" "}
+            <span className="text-lg font-normal">{selected.hipodromo} </span>{" "}
           </p>
           <p className="font-bold text-lg">
-            Posición:{" "}
-            <span className="text-lg font-normal">{selected.posicion}</span>{" "}
+            Pollas totales de la apuesta:{" "}
+            <span className="text-lg font-normal">{tickets.length} </span>{" "}
           </p>
           <p className="font-bold text-lg">
-            PREMIO CORRESPONDIDO:{" "}
-            <span className="text-lg font-normal">{primerLugar_Ganador}$ </span>{" "}
+            Puntaje:{" "}
+            <span className="text-lg font-normal">{selected.puntos} </span>{" "}
           </p>
-          {selected.reclamado != "NO" ? (
+          {selected.posicion != "N°1" && selected.posicion != "N°2" ? (
+            <p className="font-bold text-lg">
+              Estado:
+              <span className="text-lg font-normal"> TICKET PERDEDOR</span>{" "}
+            </p>
+          ) : selected.posicion == "N°1" ? (
             <>
-              <p className="font-bold text-2xl my-2 text-center text-green-700">
-                TICKET COBRADO
-              </p>
-              <p className="font-bold text-lg my-2 text-center text-green-700">
-                PROCESADO POR CAJERO:{" "}
-                <span className="text-lg font-normal text-black">
-                  {selected.cobrado_por}
+              <p className="font-bold text-lg">
+                Estado:
+                <span className="text-lg font-normal">
+                  {" "}
+                  TICKET GANADOR
                 </span>{" "}
-              </p>{" "}
-            </>
-          ) : (
-            <>
-              <button>COBRAR</button>
-            </>
-          )}
-        </>
-      ) : selected.posicion == "N°2" ? (
-        <>
-          <p className="font-bold text-lg">
-            Estado:
-            <span className="text-lg font-normal"> TICKET GANADOR</span>{" "}
-          </p>
-          <p className="font-bold text-lg">
-            Posición:{" "}
-            <span className="text-lg font-normal">{selected.posicion}</span>{" "}
-          </p>
-          <p className="font-bold text-lg">
-            PREMIO CORRESPONDIDO:{" "}
-            <span className="text-lg font-normal">
-              {segundoLugar_Ganador}${" "}
-            </span>{" "}
-          </p>
-          {selected.reclamado != "NO" ? (
-            <>
-              <p className="font-bold text-2xl my-2 text-center text-green-700">
-                TICKET COBRADO
               </p>
-              <p className="font-bold text-lg my-2 text-center text-green-700">
-                PROCESADO POR CAJERO:{" "}
-                <span className="text-lg font-normal text-black">
-                  {selected.cobrado_por}
+              <p className="font-bold text-lg">
+                Posición:{" "}
+                <span className="text-lg font-normal">{selected.posicion}</span>{" "}
+              </p>
+              <p className="font-bold text-lg">
+                PREMIO CORRESPONDIDO:{" "}
+                <span className="text-lg font-normal">
+                  {primerLugar_Ganador}${" "}
                 </span>{" "}
-              </p>{" "}
+              </p>
+              {selected.reclamado != "NO" ? (
+                <>
+                  <p className="font-bold text-2xl my-2 text-center text-green-700">
+                    TICKET COBRADO
+                  </p>
+                  <p className="font-bold text-lg my-2 text-center text-green-700">
+                    PROCESADO POR CAJERO:{" "}
+                    <span className="text-lg font-normal text-black">
+                      {selected.cobrado_por}
+                    </span>{" "}
+                  </p>{" "}
+                </>
+              ) : (
+                <div className="flex flex-col my-6">
+                  <button
+                    className="  bg-green-500 p-2 font-bold text-2xl rounded-2xl  hover:bg-green-600"
+                    onClick={handleClick}
+                  >
+                    MARCAR COMO COBRADO
+                  </button>
+                </div>
+              )}
             </>
-          ) : (
-            <div className="flex flex-col my-6">
-              <button className="  bg-green-500 p-2 font-bold text-2xl rounded-2xl">
-                MARCAR COMO COBRADO
-              </button>
-            </div>
-          )}
+          ) : selected.posicion == "N°2" ? (
+            <>
+              <p className="font-bold text-lg">
+                Estado:
+                <span className="text-lg font-normal">
+                  {" "}
+                  TICKET GANADOR
+                </span>{" "}
+              </p>
+              <p className="font-bold text-lg">
+                Posición:{" "}
+                <span className="text-lg font-normal">{selected.posicion}</span>{" "}
+              </p>
+              <p className="font-bold text-lg">
+                PREMIO CORRESPONDIDO:{" "}
+                <span className="text-lg font-normal">
+                  {segundoLugar_Ganador}${" "}
+                </span>{" "}
+              </p>
+              {selected.reclamado != "NO" ? (
+                <>
+                  <p className="font-bold text-2xl my-2 text-center text-green-600">
+                    TICKET COBRADO
+                  </p>
+                  <p className="font-bold text-lg my-2 text-center text-green-600">
+                    PROCESADO POR CAJERO:{" "}
+                    <span className="text-lg font-normal text-black">
+                      {selected.cobrado_por}
+                    </span>{" "}
+                  </p>{" "}
+                </>
+              ) : (
+                <div className="flex flex-col my-6">
+                  <button
+                    className="  bg-green-500 p-2 font-bold text-2xl rounded-2xl  hover:bg-green-600"
+                    onClick={handleClick}
+                  >
+                    MARCAR COMO COBRADO
+                  </button>
+                </div>
+              )}
+            </>
+          ) : null}{" "}
         </>
-      ) : null}
+      ) : (
+        <h1 className="text-lg font-medium text-red-900">
+          LAS CARRERAS SIGUEN EN CURSO, REVISAR NUEVAMENTE AL TERMINAR TODAS LAS
+          CARRERAS
+        </h1>
+      )}
+
       <hr className="border-gray-300 my-1"></hr>
     </div>
   );

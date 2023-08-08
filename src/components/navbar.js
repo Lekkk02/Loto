@@ -54,6 +54,14 @@ export default function NavBar() {
                 Crear ticket
               </Link>
             </div>
+            <div>
+              <Link
+                href="/estado"
+                className="font-bold text-md hover:text-gray-600"
+              >
+                Verificar Ticket
+              </Link>
+            </div>
             {check ? (
               <div>
                 <Link

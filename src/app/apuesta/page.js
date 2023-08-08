@@ -10,7 +10,6 @@ export default function Home() {
   const [apuesta, setApuesta] = useState([]);
   const [status, setStatus] = useState([]);
   const { data: session, status: estatus } = useSession();
-
   const router = useRouter();
   if (!session) {
     if (estatus == "unauthenticated") {
@@ -35,7 +34,11 @@ export default function Home() {
   }
   if (session) {
     if (estatus == "authenticated") {
-      return status == "ACTIVE" ? <CerrarApuesta /> : <Apuesta />;
+      if (session.user.rol == "ADMIN") {
+        return status == "ACTIVE" ? <CerrarApuesta /> : <Apuesta />;
+      } else {
+        router.push("/");
+      }
     }
   }
 }
