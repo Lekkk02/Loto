@@ -234,11 +234,11 @@ const Estado = (props) => {
               </p>{" "}
             </>
           ) : (
-            <>
-              <button className="bg-green-500 p-4 font-bold text-2xl rounded-2xl">
-                COBRAR
+            <div className="flex flex-col my-6">
+              <button className="  bg-green-500 p-2 font-bold text-2xl rounded-2xl">
+                MARCAR COMO COBRADO
               </button>
-            </>
+            </div>
           )}
         </>
       ) : null}
