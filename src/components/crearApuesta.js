@@ -7,6 +7,7 @@ export default function Home() {
   const [hipodromoInput, setHipodromo] = useState("");
   const [carrerasInput, setCarreras] = useState(null);
   const [caballosInput, setCaballos] = useState(null);
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,6 +65,7 @@ export default function Home() {
       } catch (err) {
         console.log(err);
       }
+      router.push("/");
     }
   };
 
