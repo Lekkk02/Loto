@@ -57,7 +57,7 @@ export default function Home() {
           Pollas vendidas: <span className="font-light">{totalPollas}</span>
         </p>
         <p className="font-bold text-xl my-2">
-          Total a recibir:{" "}
+          Porcentaje del cajero:{" "}
           <span className="font-light">{totalDinero.toFixed(2)}$</span>
         </p>
       </div>
