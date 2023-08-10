@@ -12,11 +12,6 @@ if (mongoose.models["Apuesta"]) {
         type: String,
         required: true,
       },
-      caballos: {
-        type: Array,
-        default: undefined,
-        required: true,
-      },
       status: {
         type: String,
         default: "ACTIVE",

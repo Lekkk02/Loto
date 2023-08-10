@@ -19,6 +19,8 @@ export default function Home() {
   const [apuestas, setApuestas] = useState([]);
   const [carrerasRetirados, setCarrerasRetirados] = useState([]);
   const [objCarreras, setCarreras] = useState([]);
+  const [objCaballosEnCarrera, setCaballosEnCarrera] = useState([]);
+
   const [nombre, setNombre] = useState("");
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -29,12 +31,15 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         setApuestas(data);
-        setCaballos(data.caballos);
-        setCarrerasRetirados(data.carreras);
         const carrerasObj = {};
         Object.keys(data.carreras).forEach((key) => {
-          carrerasObj[key] = { primer: data.carreras[key].primer };
+          carrerasObj[key] = { primer: data.carreras[key].primero };
         });
+        const caballosEnCarrera = {};
+        Object.keys(data.carreras).forEach((key) => {
+          caballosEnCarrera[key] = { caballos: data.carreras[key].caballos };
+        });
+        setCaballosEnCarrera(caballosEnCarrera);
         setCarreras(carrerasObj);
       });
   }, []);
@@ -116,7 +121,9 @@ export default function Home() {
         const carrerasTexto = Object.keys(carreras)
           .map(
             (key) =>
-              `Carr.${key.split("carrera")[1]}- Caballo ${carreras[key].primer}`
+              `Carr.${key.split("carrera")[1]} - Caballo ${
+                carreras[key].primer
+              }`
           )
           .join("\n");
         const contenidoArchivo = `\n----------------------\n${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${apuestas.hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\n----------------------\n----------------------\n`;
@@ -165,9 +172,7 @@ export default function Home() {
         apuestas == null ||
         apuestas == undefined ||
         objCarreras == null ||
-        objCarreras == undefined ||
-        caballos == undefined ||
-        caballos == null
+        objCarreras == undefined
       ) {
         return (
           <h1 className="text-2xl text-center py-64 font-bold">Cargando...</h1>
@@ -217,18 +222,17 @@ export default function Home() {
                       name={key}
                       id={key}
                       className="rounded-md h-6 my-2"
-                      value={objCarreras[key].primer}
                       onChange={handleChange}
-                      defaultValue={"DEFAULT"}
+                      defaultValue={"selection"}
                     >
-                      <option value={"DEFAULT"} disabled>
+                      <option value="selection" disabled>
                         Seleccione caballo
                       </option>
 
-                      {caballos
+                      {objCaballosEnCarrera[key].caballos
                         .filter(
                           (caballo) =>
-                            !carrerasRetirados[key].retirados
+                            !apuestas.carreras[key].retirados
                               .split(",")
                               .includes(caballo.toString())
                         )

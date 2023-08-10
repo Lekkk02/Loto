@@ -1,81 +1,73 @@
 "use client";
-import { redirect } from "next/dist/server/api-utils";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useState } from "react";
-export default function Home() {
+import { useRouter } from "next/navigation";
+
+function FormularioCarrera() {
+  const [bcarreras, setCarreras] = useState([]);
   const [hipodromoInput, setHipodromo] = useState("");
-  const [carrerasInput, setCarreras] = useState(null);
-  const [caballosInput, setCaballos] = useState(null);
   const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    let check = true;
-    if (
-      hipodromoInput == undefined ||
-      hipodromoInput == "" ||
-      carrerasInput == undefined ||
-      carrerasInput == "" ||
-      caballosInput == undefined ||
-      caballosInput == ""
-    ) {
-      check = false;
-    }
-    if (check) {
-      let status;
+  const agregarCarrera = () => {
+    setCarreras([...bcarreras, { id: "", caballos: "" }]);
+  };
 
-      let carrerasFiltradas = carrerasInput
+  const handleIdChange = (e, index) => {
+    const carrerasActualizadas = [...bcarreras];
+    carrerasActualizadas[index].id = e.target.value;
+    setCarreras(carrerasActualizadas);
+  };
+
+  const handleCaballosChange = (e, index) => {
+    const carrerasActualizadas = [...bcarreras];
+    carrerasActualizadas[index].caballos = e.target.value;
+    setCarreras(carrerasActualizadas);
+  };
+
+  const enviarFormulario = async (ev) => {
+    ev.preventDefault();
+
+    const data = {};
+    let caballos = [];
+    bcarreras.forEach((carrera) => {
+      const caballosT = carrera.caballos
         .split(",")
-        .filter((element) => element !== "");
-      let caballos = caballosInput
-        .split(",")
-        .filter((element) => element !== "");
-
-      carrerasFiltradas = carrerasFiltradas.filter((item, index) => {
-        return carrerasFiltradas.indexOf(item) === index;
+        .map((caballo) => caballo.trim())
+        .filter(
+          (caballo, i, arr) => caballo !== "" && arr.indexOf(caballo) === i
+        );
+      caballos = caballosT;
+      data[`carrera${carrera.id}`] = {
+        primero: "",
+        segundo: "",
+        tercero: "",
+        retirados: "",
+        caballos: caballos,
+      };
+    });
+    let status;
+    const carreras = data;
+    try {
+      await fetch("/api/apuestas", {
+        method: "POST",
+        body: JSON.stringify({
+          hipodromo: hipodromoInput,
+          carreras: data,
+          status,
+        }),
       });
-
-      caballos = caballos.filter((item, index) => {
-        return caballos.indexOf(item) === index;
-      });
-
-      let carreras = {};
-      for (let i = 0; i < carrerasFiltradas.length; i++) {
-        let carrera = "carrera" + carrerasFiltradas[i];
-        carreras[carrera] = {
-          primero: "",
-          segundo: "",
-          tercero: "",
-          retirados: "",
-        };
-      }
-      const hipodromo = hipodromoInput;
-
-      try {
-        await fetch("/api/apuestas", {
-          method: "POST",
-          body: JSON.stringify({
-            hipodromo,
-            carreras,
-            caballos,
-            status,
-          }),
-        });
-      } catch (err) {
-        console.log(err);
-      }
-      router.push("/");
+    } catch (err) {
+      console.log(err);
     }
+    router.push("/");
   };
 
   return (
     <main>
       <div className="flex flex-col items-center p-56">
         <form
-          onSubmit={handleSubmit}
-          className="flex flex-col bg-transparent border-2 w-96 shadow-2xl text-center border-black p-16 rounded-lg
-          "
+          onSubmit={enviarFormulario}
+          className="flex flex-col bg-transparent border-2 w-[500px] shadow-2xl text-center border-black p-16 rounded-lg
+        "
         >
           <p className="relative -top-10 text-lg font-bold ">Abrir apuesta</p>
           <label htmlFor="txtCedula">Hipódromo </label>
@@ -87,31 +79,44 @@ export default function Home() {
             onChange={(e) => setHipodromo(e.target.value)}
             placeholder="Hipódromo de las carreras"
             className="rounded-md p-1 my-2"
-          ></input>
-          <label htmlFor="txtCedula">Carreras</label>
-          <input
-            type="text"
-            name="carreras"
-            id="txtCarreras"
-            value={carrerasInput == null ? "" : carrerasInput}
-            onChange={(e) => setCarreras(e.target.value)}
-            placeholder="EJ: 1,2,3,4,5,6,7"
-            className="rounded-md p-1 my-2"
-            pattern="^\d+(,\d+)*$"
-          ></input>
-          <label htmlFor="txtCedula">Caballos a participar</label>
-          <input
-            type="text"
-            name="caballos"
-            id="txtCaballos"
-            value={caballosInput == null ? "" : caballosInput}
-            onChange={(e) => setCaballos(e.target.value)}
-            placeholder="EJ: 1,2,3,4,5,6,7"
-            className="rounded-md p-1 my-2"
-            pattern="^([a-zA-Z0-9]+,)*[a-zA-Z0-9]+$"
+            required
           ></input>
 
-          <button className="cursor-pointer" type="submit" name="button">
+          {bcarreras.map((carrera, index) => (
+            <div key={index} className="flex flex-row my-2">
+              <input
+                type="text"
+                placeholder="N° carrera"
+                className="w-1/2 mx-1 h-8 rounded-md "
+                value={carrera.id}
+                title="No ingrese espacios en el campo"
+                pattern="^[^ ]*$"
+                required
+                onChange={(e) => handleIdChange(e, index)}
+              />
+              <input
+                type="text"
+                placeholder="Caballos"
+                className="w-full mx-1 h-8 rounded-md"
+                value={carrera.caballos}
+                title="No ingrese espacios en el campo"
+                pattern="^[^ ]*$"
+                required
+                onChange={(e) => handleCaballosChange(e, index)}
+              />
+            </div>
+          ))}
+          <button
+            onClick={agregarCarrera}
+            type="button"
+            className="font-bold bg-blue-500 rounded-lg p-1 mt-4 mb-6"
+          >
+            Agregar Carrera
+          </button>
+          <button
+            type="submit"
+            className="m-4 justify-center bg-green-500 rounded-lg font-bold p-1"
+          >
             Crear Apuesta
           </button>
         </form>
@@ -119,3 +124,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default FormularioCarrera;
