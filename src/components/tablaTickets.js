@@ -10,17 +10,18 @@ const Table = () => {
   const [recordsToShow, setRecordsToShow] = useState(10);
   const [buscado, setBuscado] = useState("");
   const getApuestas = () => {
-    const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
     return data;
   };
+  const {
+    data: data2,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR("/api/apuestas", fetcher);
 
-  const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/tickets/${id}`, fetcher);
-    return data;
-  };
-  const data2 = getApuestas();
-  const data = getTickets(data2?._id);
-
+  const { data, error, isLoading } = useSWR(
+    data2 ? `/api/tickets/${data2?._id}` : null,
+    fetcher
+  );
   const renderTableHeader = () => {
     if (!data) return null;
     let header = Object.keys(data2.carreras);

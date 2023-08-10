@@ -294,7 +294,8 @@ const Estado = (props) => {
                     PROCESADO POR CAJERO:{" "}
                     <span className="text-lg font-normal text-black">
                       {selected.cobrado_por}
-                    </span>{" "}
+                    </span>
+                    {+" "}
                   </p>{" "}
                 </>
               ) : (
