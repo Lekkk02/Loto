@@ -8,22 +8,18 @@ import useSWR from "swr";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 const Reporte = () => {
-  const getApuestas = () => {
-    const { data, error, isLoading } = useSWR("/api/apuestas", fetcher);
-    return data;
-  };
+  const {
+    data: data2,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR("/api/apuestas", fetcher);
 
-  const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/reporte/${id}`, fetcher);
-    return data;
-  };
-  const data2 = getApuestas();
-  const data = getTickets(data2?._id);
+  const { data, error, isLoading } = useSWR(
+    data2 ? `/api/reporte/${data2?._id}` : null,
+    fetcher
+  );
 
-  if (!data) {
-    return <h1>Cargando...</h1>;
-  }
-  if (!data2) {
+  if (cargandoApuesta || isLoading) {
     return <h1>Cargando...</h1>;
   }
 
@@ -88,12 +84,6 @@ const Reporte = () => {
       return item.posicion;
     }
   };
-
-  console.log(
-    data.filter((ticket) => {
-      return ticket.posicion == "N°1" || ticket.posicion == "N°2";
-    })
-  );
 
   const generate = async () => {
     const doc = new jsPDF();
