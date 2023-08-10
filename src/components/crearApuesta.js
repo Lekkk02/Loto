@@ -96,7 +96,7 @@ function FormularioCarrera() {
               />
               <input
                 type="text"
-                placeholder="Caballos"
+                placeholder="Caballos - EJ:1,2,3,4,5,6,7,8,9"
                 className="w-full mx-1 h-8 rounded-md"
                 value={carrera.caballos}
                 title="No ingrese espacios en el campo"

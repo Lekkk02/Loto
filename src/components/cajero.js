@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
   const { data: session, status: status } = useSession();
-  const [apuestas, setApuestas] = useState([]);
-  const [tickets, setTickets] = useState([]);
+
   const [buscado, setBuscado] = useState("");
   const router = useRouter();
   if (!session) {
@@ -17,23 +19,31 @@ export default function Home() {
   let cajero;
   if (status == "authenticated") cajero = session.user.username;
 
-  useEffect(() => {
-    fetch("/api/apuestas")
-      .then((response) => response.json())
-      .then((data) => {
-        setApuestas(data);
-        fetch(`/api/tickets/${data?._id}`)
-          .then((response2) => response2.json())
-          .then((data2) => {
-            setTickets(data2);
-          });
-      });
-  }, []);
+  const {
+    data: apuestas,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR("/api/apuestas", fetcher);
 
-  if (!apuestas || !tickets || !cajero)
+  const {
+    data: ticketsRAW,
+    error: errorTickets,
+    isLoading: cargandoTickets,
+  } = useSWR(apuestas ? `/api/tickets/${apuestas._id}` : null, fetcher);
+
+  if (cargandoApuesta || cargandoTickets) {
     return (
       <h1 className="font-bold text-2xl text-center py-24">Cargando...</h1>
     );
+  }
+  if (errorApuesta || errorTickets) {
+    return (
+      <h1 className="font-bold text-2xl text-center py-64 min-w-[400px]">
+        ¡Estamos procesando tu solicitud, recarga la página!
+      </h1>
+    );
+  }
+  let tickets = ticketsRAW;
   let arrTickets = [];
 
   tickets.map((ticket) => {

@@ -2,46 +2,54 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
   const { data: session, status: status } = useSession();
-  const [apuestas, setApuestas] = useState([]);
-  const [tickets, setTickets] = useState([]);
-  const [cajeros, setCajeros] = useState([]);
+
   const router = useRouter();
 
-  useEffect(() => {
-    fetch("/api/apuestas")
-      .then((response) => response.json())
-      .then((data) => {
-        setApuestas(data);
-        fetch(`/api/tickets/${data?._id}`)
-          .then((response2) => response2.json())
-          .then((data2) => {
-            setTickets(data2);
-          });
-      });
-    fetch(`/api/cajeros`)
-      .then((response3) => response3.json())
-      .then((data3) => {
-        setCajeros(data3);
-      });
-  }, []);
+  const {
+    data: apuestas,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR("/api/apuestas", fetcher);
 
-  useEffect(() => {
-    const updatedCajeros = cajeros.map((cajero) => {
-      const pollas = tickets.filter(
-        (ticket) => ticket.cajero === cajero.username
-      ).length;
-      return { ...cajero, pollas };
-    });
-    setCajeros(updatedCajeros);
-  }, [tickets]);
+  const {
+    data: tickets,
+    error: errorTickets,
+    isLoading: cargandoTickets,
+  } = useSWR(apuestas ? `/api/tickets/${apuestas._id}` : null, fetcher);
 
-  if (!apuestas || !tickets || !cajeros)
+  const {
+    data: cajerosRAW,
+    error: errorCajeros,
+    isLoading: cargandoCajeros,
+  } = useSWR(`/api/cajeros`, fetcher);
+
+  if (cargandoApuesta || cargandoTickets || cargandoCajeros) {
     return (
       <h1 className="font-bold text-2xl text-center py-24">Cargando...</h1>
     );
+  }
+  if (errorApuesta || errorTickets || errorCajeros) {
+    return (
+      <h1 className="font-bold text-2xl text-center py-64 min-w-[400px]">
+        ¡Estamos procesando tu solicitud, recarga la página!
+      </h1>
+    );
+  }
+  let cajeros = cajerosRAW;
+
+  const updatedCajeros = cajeros.map((cajero) => {
+    const pollas = tickets.filter(
+      (ticket) => ticket.cajero === cajero.username
+    ).length;
+    return { ...cajero, pollas };
+  });
+  cajeros = updatedCajeros;
 
   return (
     <>

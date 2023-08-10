@@ -126,7 +126,7 @@ export default function Home() {
               }`
           )
           .join("\n");
-        const contenidoArchivo = `\n----------------------\n${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${apuestas.hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\n----------------------\n----------------------\n`;
+        const contenidoArchivo = `\n----------------------\n${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${respuesta}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${apuestas.hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\nVISITA SELLATUPOLLA.COM\nPARA VER TU TICKET\n----------------------\n----------------------\n`;
         const archivo = new File(
           [contenidoArchivo],
           `Factura - ${respuesta}.txt`,

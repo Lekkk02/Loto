@@ -7,26 +7,18 @@ import { useState, useEffect } from "react";
   return data.json();
 }; */
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
-const fetcher2 = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
-  const [data, setTickets] = useState([]);
-  const [data2, setApuestas] = useState([]);
+  const {
+    data: data2,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR("/api/apuestas", fetcher);
 
-  useEffect(() => {
-    fetch("/api/apuestas")
-      .then((response) => response.json())
-      .then((data) => {
-        setApuestas(data);
-        if (data != undefined) {
-          fetch(`/api/tickets/${data?._id}`)
-            .then((response2) => response2.json())
-            .then((data2) => {
-              setTickets(data2);
-            });
-        }
-      });
-  }, []);
+  const { data, error, isLoading } = useSWR(
+    data2 ? `/api/tickets/${data2?._id}` : null,
+    fetcher
+  );
 
   const stat = (data) => {
     if (data == null || data == undefined) {
@@ -36,21 +28,20 @@ export default function Home() {
     }
   };
 
-  if (stat(data2) == false) {
+  if (cargandoApuesta || isLoading) {
     return (
       <h1 className="font-bold text-2xl text-center py-64 min-w-[400px]">
         ¡Bienvenido a SellaTuPolla.com!
       </h1>
     );
   }
-  if (!data2) {
+  if (errorApuesta || error) {
     return (
       <h1 className="font-bold text-2xl text-center py-64 min-w-[400px]">
-        ¡Bienvenido a SellaTuPolla.com!
+        ¡Estamos procesando tu solicitud, recarga la página!
       </h1>
     );
   }
-
   return (
     <div>
       <div>
@@ -67,7 +58,7 @@ export default function Home() {
               {stat(data)} Pollas
             </span>
           </h1>
-          {data2.mensaje == "" ? (
+          {data2?.mensaje == "" ? (
             <p></p>
           ) : (
             <h1 className="font-bold text-xl text-red-500 mt-4">
