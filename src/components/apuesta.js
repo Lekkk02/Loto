@@ -42,6 +42,18 @@ export default function Home() {
       </h1>
     );
   }
+  const dineroTotal = data.length * 2 * 0.6;
+  const dineroPrimerLugar = dineroTotal * 0.7;
+  const dineroSegundoLugar = dineroTotal * 0.3;
+  const totalPrimer = data.filter((ticket) => {
+    return ticket.posicion == "N°1";
+  }).length;
+  const totalSegundo = data.filter((ticket) => {
+    return ticket.posicion == "N°2";
+  }).length;
+
+  const primerLugar_Ganador = (dineroPrimerLugar / totalPrimer).toFixed(2);
+  const segundoLugar_Ganador = (dineroSegundoLugar / totalSegundo).toFixed(2);
   return (
     <div>
       <div>
@@ -75,12 +87,28 @@ export default function Home() {
             {"$"}
           </span>
         </h1>
-        <h1 className="font-l">Primer lugar: </h1>
-        <h1 className="font-medium">Segundo lugar:</h1>
+        <h1 className="">Primer lugar: {dineroPrimerLugar.toFixed(2)}$</h1>
+        <h1 className="">Segundo lugar: {dineroSegundoLugar.toFixed(2)}$</h1>
         <hr className="block border-1 border-black w-full"></hr>
         <h1 className="font-bold">Premios por ganador </h1>
-        <h1>Primer lugar:</h1>
-        <h1>Segundo lugar:</h1>
+        <h1>
+          Primer lugar:{" "}
+          <span className=" text-green-800">
+            {" "}
+            {data2.terminada !== "N"
+              ? primerLugar_Ganador
+              : "SE MOSTRARÁ AL FINALIZAR LAS CARRERAS"}
+          </span>
+        </h1>
+        <h1>
+          Segundo lugar:
+          <span className=" text-green-800">
+            {" "}
+            {data2.terminada !== "N"
+              ? segundoLugar_Ganador
+              : "SE MOSTRARÁ AL FINALIZAR LAS CARRERAS"}
+          </span>
+        </h1>
       </div>
 
       <div className="mt-12" key="TablaCarrerasApuesta">
