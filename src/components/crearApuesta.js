@@ -46,19 +46,26 @@ function FormularioCarrera() {
     });
     let status;
     const carreras = data;
-    try {
-      await fetch("/api/apuestas", {
-        method: "POST",
-        body: JSON.stringify({
-          hipodromo: hipodromoInput,
-          carreras: data,
-          status,
-        }),
-      });
-    } catch (err) {
-      console.log(err);
+    let check = false;
+
+    if (bcarreras.length > 0) {
+      check = true;
     }
-    router.push("/");
+    if (check) {
+      try {
+        await fetch("/api/apuestas", {
+          method: "POST",
+          body: JSON.stringify({
+            hipodromo: hipodromoInput,
+            carreras: data,
+            status,
+          }),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      router.push("/");
+    }
   };
 
   return (
