@@ -9,7 +9,7 @@ const Imprimir = (props) => {
         `Carr.${key.split("carrera")[1]} - Caballo ${carreras[key].primer}`
     )
     .join("\n");
-  const contenidoArchivo = `\n----------------------\n${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${serial}\n----------------------\nPOLLA X PUNTOS\n----------------------\nHIP: ${hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\nVISITA SELLATUPOLLA.COM\nPARA VER TU TICKET\n----------------------\n----------------------\n`;
+  const contenidoArchivo = `\n----------------------\nVENDEDOR: ${cajero}\n${fecha}\nCI: ${cedula}\nNOMBRE: ${nombre}\nSERIAL: ${serial}\n----------------------\nSELLATUPOLLA\n----------------------\nHIP: ${hipodromo}\n----------------------\n${carrerasTexto}\n----------------------\nVALOR POLLA: 2$\nVISITA SELLATUPOLLA.COM\nPARA VER TU TICKET\n----------------------\n----------------------\n`;
   const handleClick = () => {
     const archivo = new File([contenidoArchivo], `Factura - ${serial}.txt`, {
       type: "text/plain;charset=utf-8",
