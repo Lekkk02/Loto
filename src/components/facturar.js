@@ -37,7 +37,7 @@ const DatosFactura = (props) => {
       return (
         <div className="ml-2">
           <br></br>
-          {cajero}
+          VENDEDOR: {cajero}
           <br></br>
           {formatDate(date) + " - " + hours}
           <br></br>
@@ -49,7 +49,7 @@ const DatosFactura = (props) => {
           <br></br>
           -------------------------------
           <br></br>
-          POLLA X PUNTOS
+          SELLATUPOLLA
           <br></br>
           -------------------------------
           <br></br>
@@ -62,7 +62,7 @@ const DatosFactura = (props) => {
               <>
                 {"Carr." +
                   carrera.substring(7) +
-                  "- Caballo " +
+                  " - Caballo " +
                   carreras[carrera].primer}
                 <br></br>{" "}
               </>
