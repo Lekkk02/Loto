@@ -124,6 +124,7 @@ export default function Home() {
             {data2.terminada !== "N"
               ? primerLugar_Ganador
               : "SE MOSTRARÁ AL FINALIZAR LAS CARRERAS"}
+            $
           </span>
         </h1>
         <h1>
@@ -133,6 +134,7 @@ export default function Home() {
             {data2.terminada !== "N"
               ? segundoLugar_Ganador
               : "SE MOSTRARÁ AL FINALIZAR LAS CARRERAS"}
+            $
           </span>
         </h1>
       </div>
