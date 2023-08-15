@@ -9,6 +9,9 @@ import { useState, useEffect } from "react";
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function Home() {
+  const [ticketsPrimer, setPrimer] = useState(0);
+  const [ticketsSegundo, setSegundo] = useState(0);
+
   const {
     data: data2,
     error: errorApuesta,
@@ -19,7 +22,27 @@ export default function Home() {
     data2 ? `/api/tickets/${data2?._id}` : null,
     fetcher
   );
+  useEffect(() => {
+    if (data) {
+      const totalPrimer = data.filter((ticket) => {
+        return ticket.posicion == "N°1";
+      });
+      const totalSegundo = data.filter((ticket) => {
+        return ticket.posicion == "N°2";
+      });
 
+      setPrimer(totalPrimer.length);
+      setSegundo(totalSegundo.length);
+    }
+  });
+
+  /*   let dineroTotal;
+  let dineroPrimerLugar
+  let dineroSegundoLugar
+  let totalPrimer
+  let totalSegundo
+  let primerLugar_Ganador
+  let segundoLugar_Ganador */
   const stat = (data) => {
     if (data == null || data == undefined) {
       return false;
@@ -42,6 +65,7 @@ export default function Home() {
       </h1>
     );
   }
+
   const dineroTotal = data.length * 2 * 0.6;
   const dineroPrimerLugar = dineroTotal * 0.7;
   const dineroSegundoLugar = dineroTotal * 0.3;
@@ -51,9 +75,11 @@ export default function Home() {
   const totalSegundo = data.filter((ticket) => {
     return ticket.posicion == "N°2";
   }).length;
-
-  const primerLugar_Ganador = (dineroPrimerLugar / totalPrimer).toFixed(2);
+  console.log(totalSegundo);
+  const primerLugar_Ganador = (dineroPrimerLugar / ticketsPrimer).toFixed(2);
   const segundoLugar_Ganador = (dineroSegundoLugar / totalSegundo).toFixed(2);
+  console.log(primerLugar_Ganador);
+  console.log(segundoLugar_Ganador);
   return (
     <div>
       <div>
