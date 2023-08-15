@@ -204,12 +204,28 @@ const Table = () => {
           return (
             <>
               <tr key={index + "ALL"}>
-                <td
-                  key={item.posicion + index + "POSICION"}
-                  className="border-b border-black"
-                >
-                  {getPos(item, index)}
-                </td>
+                {getPos(item, index) == "N°1" ? (
+                  <td
+                    key={item.posicion + index + "POSICION"}
+                    className="border-b border-black bg-yellow-500 font-bold"
+                  >
+                    {getPos(item, index)}
+                  </td>
+                ) : getPos(item, index) == "N°2" ? (
+                  <td
+                    key={item.posicion + index + "POSICION"}
+                    className="border-b border-black bg-blue-500 font-bold"
+                  >
+                    {getPos(item, index)}
+                  </td>
+                ) : (
+                  <td
+                    key={item.posicion + index + "POSICION"}
+                    className="border-b border-black"
+                  >
+                    {getPos(item, index)}
+                  </td>
+                )}
                 <td
                   key={item.ticketSerial + index}
                   className="border-b border-black"
