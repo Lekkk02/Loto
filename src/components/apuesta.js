@@ -75,11 +75,9 @@ export default function Home() {
   const totalSegundo = data.filter((ticket) => {
     return ticket.posicion == "N°2";
   }).length;
-  console.log(totalSegundo);
   const primerLugar_Ganador = (dineroPrimerLugar / ticketsPrimer).toFixed(2);
   const segundoLugar_Ganador = (dineroSegundoLugar / totalSegundo).toFixed(2);
-  console.log(primerLugar_Ganador);
-  console.log(segundoLugar_Ganador);
+
   return (
     <div>
       <div>
