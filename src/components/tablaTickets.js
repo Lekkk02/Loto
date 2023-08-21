@@ -131,26 +131,35 @@ const Table = () => {
         }
         return (
           <tr key={"record" + item.ticketSerial + index}>
-            {getPos(item, index) == "N°1" ? (
-              <td
-                key={item.posicion + index + "POSICION"}
-                className="border-b border-black bg-yellow-500 font-bold"
-              >
-                {getPos(item, index)}
-              </td>
-            ) : getPos(item, index) == "N°2" ? (
-              <td
-                key={item.posicion + index + "POSICION"}
-                className="border-b border-black bg-blue-500 font-bold"
-              >
-                {getPos(item, index)}
-              </td>
+            {data2.terminada !== "N" ? (
+              getPos(item, index) == "N°1" ? (
+                <td
+                  key={item.posicion + index + "POSICION"}
+                  className="border-b border-black bg-yellow-500 font-bold"
+                >
+                  {getPos(item, index)}
+                </td>
+              ) : getPos(item, index) == "N°2" ? (
+                <td
+                  key={item.posicion + index + "POSICION"}
+                  className="border-b border-black bg-blue-500 font-bold"
+                >
+                  {getPos(item, index)}
+                </td>
+              ) : (
+                <td
+                  key={item.posicion + index + "POSICION"}
+                  className="border-b border-black"
+                >
+                  {index}
+                </td>
+              )
             ) : (
               <td
                 key={item.posicion + index + "POSICION"}
                 className="border-b border-black"
               >
-                {getPos(item, index)}
+                {index}
               </td>
             )}
             <td
@@ -204,20 +213,29 @@ const Table = () => {
           return (
             <>
               <tr key={index + "ALL"}>
-                {getPos(item, index) == "N°1" ? (
-                  <td
-                    key={item.posicion + index + "POSICION"}
-                    className="border-b border-black bg-yellow-500 font-bold"
-                  >
-                    {getPos(item, index)}
-                  </td>
-                ) : getPos(item, index) == "N°2" ? (
-                  <td
-                    key={item.posicion + index + "POSICION"}
-                    className="border-b border-black bg-blue-500 font-bold"
-                  >
-                    {getPos(item, index)}
-                  </td>
+                {data2.terminada !== "N" ? (
+                  getPos(item, index) == "N°1" ? (
+                    <td
+                      key={item.posicion + index + "POSICION"}
+                      className="border-b border-black bg-yellow-500 font-bold"
+                    >
+                      {getPos(item, index)}
+                    </td>
+                  ) : getPos(item, index) == "N°2" ? (
+                    <td
+                      key={item.posicion + index + "POSICION"}
+                      className="border-b border-black bg-blue-500 font-bold"
+                    >
+                      {getPos(item, index)}
+                    </td>
+                  ) : (
+                    <td
+                      key={item.posicion + index + "POSICION"}
+                      className="border-b border-black"
+                    >
+                      {getPos(item, index)}
+                    </td>
+                  )
                 ) : (
                   <td
                     key={item.posicion + index + "POSICION"}

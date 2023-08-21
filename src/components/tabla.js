@@ -53,20 +53,20 @@ const Table = () => {
             </td>
             <td key={"llegada" + index} className="border border-black">
               <p className="font-bold" key={"Num1" + index}>
-                N°1:
+                N°1:{" "}
                 <span className="font-light" key={"Span1" + index}>
                   {carreras[key].primero}
                 </span>
               </p>
               <p className="font-bold" key={"Num2" + index}>
-                N°2:
-                <span className="font-light" key={"Span2" + index}>
+                N°2:{" "}
+                <span className="font-light " key={"Span2" + index}>
                   {carreras[key].segundo}
                 </span>
               </p>
               <p className="font-bold" key={"Num3" + index}>
-                N°3:
-                <span className="font-light" key={"Span3" + index}>
+                N°3:{" "}
+                <span className="font-light " key={"Span3" + index}>
                   {carreras[key].tercero}
                 </span>
               </p>
