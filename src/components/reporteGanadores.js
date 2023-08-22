@@ -137,7 +137,7 @@ const Reporte = () => {
       );
     }
 
-    doc.save("ReporteGanadores.pdf");
+    doc.save(`Reporte_Apuesta_${fecha}.pdf`);
   };
   return (
     <>
