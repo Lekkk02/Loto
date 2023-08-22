@@ -106,6 +106,24 @@ const Reporte = () => {
       });
 
     const totalPages = Math.ceil(tableRows.length / 20);
+    const dineroTotal = data?.length * 2 * 0.6;
+    const dineroPrimerLugar = dineroTotal * 0.7;
+    const dineroSegundoLugar = dineroTotal * 0.3;
+    const fecha = data2.createdAt.substring(0, 10);
+    const hora = data2.createdAt.substring(11, 19);
+    doc.text(
+      `Fecha: ${fecha} | ${hora}\nHipodromo: ${
+        data2.hipodromo
+      }\nPollas totales vendidas: ${
+        data.length
+      }\nDinero total a repartir ${dineroTotal.toFixed(
+        2
+      )}$\nDinero total primer lugar: ${dineroPrimerLugar.toFixed(
+        2
+      )}$\nDinero total segundo lugar: ${dineroSegundoLugar.toFixed(2)}$`,
+      10,
+      10
+    );
 
     for (let i = 1; i <= totalPages; i++) {
       doc.addPage();
@@ -119,41 +137,22 @@ const Reporte = () => {
       );
     }
 
-    doc.save("tickets.pdf");
-    /*  const doc = new jsPDF();
-
-    doc.text("Tickets", 14, 20);
-
-    let y = 30;
-
-    // encabezado
-    doc.text("Ticket#", 10, y);
-    doc.text("Carrera 6", 50, y);
-    doc.text("Carrera 7", 70, y);
-    // etc para las otras columnas
-
-    y += 10;
-
-    // filas
-    data.forEach((ticket) => {
-      doc.text(String(ticket.ticketSerial), 10, y);
-      doc.text(String(ticket.carreras.carrera1.primer) || "", 50, y);
-      doc.text(String(ticket.carreras.carrera2.primer) || "", 70, y);
-      // etc para las otras columnas
-
-      y += 10; // próxima fila
-    });
-
-    doc.save("tickets.pdf"); */
+    doc.save("ReporteGanadores.pdf");
   };
   return (
     <>
-      <button
-        onClick={generate}
-        className="text-center text-lg font-bold border border-black bg-green-500 p-2 rounded-md"
-      >
-        Generar reporte de ganadores
-      </button>
+      {data2.terminada !== "N" ? (
+        <button
+          onClick={generate}
+          className="text-center text-lg font-bold border border-black bg-green-500 p-2 rounded-md"
+        >
+          Generar reporte de ganadores
+        </button>
+      ) : (
+        <h1 className="text-center font-bold text-2xl">
+          EL REPORTE ESTARÁ DISPONIBLE CUANDO TERMINEN LAS CARRERAS
+        </h1>
+      )}
     </>
   );
 };
