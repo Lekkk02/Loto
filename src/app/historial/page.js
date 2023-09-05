@@ -1,5 +1,7 @@
 import connect from "@/utils/db";
 import apuestaModel from "@/models/apuestaModel";
+import Listado from "@/components/historial";
+
 async function getData() {
   try {
     await connect();
@@ -15,21 +17,9 @@ async function getData() {
 
 export default async function Factura() {
   const data = await getData();
-  console.log(data);
   return (
     <>
-      {data.map((apuesta) => (
-        <>
-          <div className="flex m-2">
-            <h1 key={apuesta.hipodromo} className="mx-1">
-              {apuesta.hipodromo}
-            </h1>
-            <h1 key={apuesta.createdAt}>{apuesta.createdAt.toString()}</h1>
-            <button>Descargar reporte</button>
-          </div>
-          <hr className="border border-black"></hr>
-        </>
-      ))}
+      <Listado data2={data} />
     </>
   );
 }
