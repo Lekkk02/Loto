@@ -18,10 +18,20 @@ async function getData() {
 export default async function Factura() {
   const data = await getData();
   const opciones = { year: "2-digit", month: "2-digit", day: "2-digit" };
+  let nuevoJSON = {};
 
+  data.forEach((obj, index) => {
+    nuevoJSON[index + 1] = {
+      _id: obj._id.toString(),
+      hipodromo: obj.hipodromo,
+      carreras: obj.carreras,
+      createdAt: obj.createdAt,
+    };
+  });
+  console.log(nuevoJSON);
   return (
     <>
-      <Listado data2={data} />
+      <Listado data2={nuevoJSON} />
     </>
   );
 }
