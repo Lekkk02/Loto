@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <head>
-        <title>SELLATUPOLLA - ¡SELLATUPOLLA.com!</title>
+        <title>¡SELLATUPOLLA.com! - SELLATUPOLLA</title>
         <meta
           name="description"
           content="Sella tu polla, sella tu ticket ya con nosotros. Apuesta tu polla en SELLATUPOLLA.COM. Apuesta tu ticket en las carreras de caballos y sé un ganador."

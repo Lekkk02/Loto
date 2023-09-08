@@ -22,6 +22,8 @@ export default function Home() {
   const [objCaballosEnCarrera, setCaballosEnCarrera] = useState([]);
 
   const [nombre, setNombre] = useState("");
+  const [hipodromo, setHipodromo] = useState("");
+
   const [cedula, setCedula] = useState("");
   const [telefono, setTelefono] = useState("");
   const [caballos, setCaballos] = useState(null);
@@ -70,13 +72,22 @@ export default function Home() {
         break;
       }
     }
+
+    if (hipodromo == undefined || hipodromo == "") {
+      const alert = document.getElementById("alerta");
+      alert.textContent = "INGRESE TODOS LOS CAMPOS...";
+      check = false;
+    }
+
     if (
       nombre == undefined ||
       nombre == "" ||
       cedula == undefined ||
       cedula == "" ||
       telefono == undefined ||
-      telefono == ""
+      telefono == "" ||
+      hipodromo == undefined ||
+      hipodromo == ""
     ) {
       check = false;
     }
@@ -194,6 +205,20 @@ export default function Home() {
                   id="alerta"
                   className="font-bold text-red-500 text-lg my-2"
                 ></p>
+
+                <label htmlFor="txtHipodromo">Hipodromo </label>
+                <select
+                  name="hipodromoOP"
+                  className="rounded-md h-6 my-2"
+                  onChange={(e) => setHipodromo(e.target.value)}
+                  defaultValue={"selection"}
+                >
+                  <option value="selection" disabled>
+                    Seleccione hipodromo
+                  </option>
+                  <option>{apuestas.hipodromo}</option>
+                </select>
+
                 <label htmlFor="txtNombre">Nombre </label>
                 <input
                   type="text"

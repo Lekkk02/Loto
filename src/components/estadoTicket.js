@@ -9,28 +9,49 @@ const Estado = (props) => {
 
   const { id_ticket } = props;
 
-  const getEstado = () => {
-    const { data, error, isLoading } = useSWR(
-      `/api/estado/${id_ticket}`,
-      fetcher
-    );
-    return data;
-  };
+  const {
+    data: ticketEstado,
+    error: errorEstado,
+    isLoading: cargandoEstado,
+  } = useSWR(`/api/estado/${id_ticket}`, fetcher);
 
-  const getApuestas = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/apuestas/${id}`, fetcher);
-    return data;
-  };
-  const getTickets = (id) => {
-    const { data, error, isLoading } = useSWR(`/api/reporte/${id}`, fetcher);
-    return data;
-  };
-  const ticketEstado = getEstado();
-  const apuestas = getApuestas(ticketEstado?.apuesta);
-  const tickets = getTickets(apuestas?._id);
+  const {
+    data: apuestas,
+    error: errorApuesta,
+    isLoading: cargandoApuesta,
+  } = useSWR(
+    ticketEstado ? `/api/apuestas/${ticketEstado?.apuesta}` : null,
+    fetcher
+  );
 
-  if (!ticketEstado || !tickets || !apuestas) {
+  const {
+    data: tickets,
+    error: errorTickets,
+    isLoading: cargandoTickets,
+  } = useSWR(apuestas ? `/api/reporte/${apuestas?._id}` : null, fetcher);
+
+  if (cargandoEstado || cargandoApuesta || cargandoTickets) {
     return <h1 className="text-center p-64 font-bold text-2xl">Cargando...</h1>;
+  }
+
+  if (!ticketEstado) {
+    return (
+      <>
+        {" "}
+        <h1 className="text-center pt-64 font-bold text-2xl">
+          Serial de ticket inválido
+        </h1>
+        <p className="pb-64 text-center text-blue-500 underline">
+          <span>
+            <a href="/estado">
+              {" "}
+              Haz click aquí para volver a la página de verificar t
+            </a>
+            ickets
+          </span>
+        </p>
+      </>
+    );
   }
 
   Object.keys(apuestas?.carreras).map((apuesta, index) => {
@@ -140,6 +161,7 @@ const Estado = (props) => {
       console.log(err);
     }
   };
+  console.log(selected);
   if (apuestas.status == "ACTIVE") {
     return (
       <div className="m-8">
@@ -170,6 +192,22 @@ const Estado = (props) => {
           Telefono del comprador:{" "}
           <span className="text-lg font-normal">{selected.telefono} </span>{" "}
         </p>
+        <p className="text-center font-medium text-base my-3">
+          CABALLOS APOSTADOS
+        </p>
+        <hr className="border-gray-400 my-1"></hr>
+        <div>
+          {Object.keys(selected.carreras).map((carrera) => (
+            <h1 className="m-2 font-bold">
+              Carrera {carrera.substring(7)}:{" "}
+              <span className="font-normal">
+                Caballo {selected.carreras[carrera].primer}
+              </span>
+            </h1>
+          ))}
+        </div>
+        <hr className="border-gray-400 my-1"></hr>
+
         <h1 className="mt-8 font-bold text-2xl text-center text-red-700">
           LA APUESTA SIGUE ACTIVA
         </h1>
@@ -203,10 +241,27 @@ const Estado = (props) => {
         Telefono del comprador:{" "}
         <span className="text-lg font-normal">{selected.telefono} </span>{" "}
       </p>
-      <hr className="border-gray-300 my-1"></hr>
+      <p className="text-center font-medium text-base my-3">
+        CABALLOS APOSTADOS
+      </p>
+      <hr className="border-gray-400 my-1"></hr>
+      <div>
+        {Object.keys(selected.carreras).map((carrera) => (
+          <h1 className="m-2 font-bold">
+            Carrera {carrera.substring(7)}:{" "}
+            <span className="font-normal">
+              Caballo {selected.carreras[carrera].primer}
+            </span>
+          </h1>
+        ))}
+      </div>
+      <hr className="border-gray-400 my-1"></hr>
 
       {apuestas.terminada !== "N" ? (
         <>
+          <p className="text-center font-medium text-base my-3">
+            ESTADO DEL TICKET
+          </p>
           <p className="font-bold text-lg">
             Hipodromo:{" "}
             <span className="text-lg font-normal">{selected.hipodromo} </span>{" "}
