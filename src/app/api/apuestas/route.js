@@ -60,9 +60,12 @@ export const PUT = async (req) => {
     try {
       await connect();
       const updatedApuesta = await apuestaModel.findOneAndUpdate(
-        { status: "ACTIVE" },
+        {},
         { $set: fieldtoUpdate },
-        { new: true }
+        {
+          new: true,
+          sort: { _id: -1 },
+        }
       );
       return new NextResponse("Apuesta created", { status: 201 });
     } catch (error) {
