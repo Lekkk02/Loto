@@ -145,12 +145,12 @@ const ActComp = () => {
             ACTUALIZAR CARRERAS
           </button>
 
-          <button
-            className="text-center p-4 font-bold bg-blue-500 rounded-md my-8 m-auto hover:bg-blue-600"
+          <a
+            className="text-center p-4 font-bold cursor-pointer bg-blue-500 rounded-md my-8 m-auto hover:bg-blue-600"
             onClick={handleCompletada}
           >
             MARCAR COMO COMPLETADA
-          </button>
+          </a>
         </div>
       </form>
     </>
