@@ -63,14 +63,24 @@ export default function NavBar() {
               </Link>
             </div>
             {check ? (
-              <div>
-                <Link
-                  href="/apuesta"
-                  className="font-bold text-md hover:text-gray-600"
-                >
-                  Administrar apuesta
-                </Link>
-              </div>
+              <>
+                <div>
+                  <Link
+                    href="/apuesta"
+                    className="font-bold text-md hover:text-gray-600"
+                  >
+                    Administrar apuesta
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/carreras"
+                    className="font-bold text-md hover:text-gray-600"
+                  >
+                    Actualizar carreras
+                  </Link>
+                </div>
+              </>
             ) : (
               <br></br>
             )}
