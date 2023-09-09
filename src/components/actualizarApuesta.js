@@ -17,6 +17,7 @@ const ActComp = () => {
           segundo: carreras[carrera].segundo || "",
           tercero: carreras[carrera].tercero || "",
           caballos: carreras[carrera].caballos,
+          retirados: carreras[carrera].retirados,
         };
         return acc;
       }, {});
