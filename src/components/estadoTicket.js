@@ -307,8 +307,8 @@ const Estado = (props) => {
                     PROCESADO POR CAJERO:{" "}
                     <span className="text-lg font-normal text-black">
                       {selected.cobrado_por}
-                    </span>{" "}
-                  </p>{" "}
+                    </span>
+                  </p>
                 </>
               ) : (
                 <div className="flex flex-col my-6">
@@ -350,8 +350,7 @@ const Estado = (props) => {
                     <span className="text-lg font-normal text-black">
                       {selected.cobrado_por}
                     </span>
-                    {+" "}
-                  </p>{" "}
+                  </p>
                 </>
               ) : (
                 <div className="flex flex-col my-6">
