@@ -49,7 +49,7 @@ const Table = () => {
               className="border border-black text-lg"
               key={key + "favGaceta" + index}
             >
-              {carreras[key].favGaceta}
+              {carreras[key].fav_Gaceta}
             </td>
             <td key={"llegada" + index} className="border border-black">
               <p className="font-bold" key={"Num1" + index}>

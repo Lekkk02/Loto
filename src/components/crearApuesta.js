@@ -41,6 +41,7 @@ function FormularioCarrera() {
         segundo: "",
         tercero: "",
         retirados: "",
+        fav_Gaceta: "",
         caballos: caballos,
       };
     });
