@@ -41,7 +41,7 @@ export default function NavBar() {
             <div>
               <Link
                 href="/perfil"
-                className="font-bold text-md hover:text-gray-600"
+                className="font-bold text-md hover:text-gray-600 ali"
               >
                 Perfil
               </Link>
@@ -78,6 +78,14 @@ export default function NavBar() {
                     className="font-bold text-md hover:text-gray-600"
                   >
                     Actualizar carreras
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    href="/gaceta"
+                    className="font-bold text-md hover:text-gray-600"
+                  >
+                    Actualizar Retirados/Gaceta
                   </Link>
                 </div>
               </>
